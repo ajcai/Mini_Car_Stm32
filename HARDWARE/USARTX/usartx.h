@@ -39,11 +39,11 @@ typedef struct _SEND_DATA_
     short X_speed;       //2个字节
     short Y_speed;       //2个字节
     short Z_speed;       //2个字节
-    short Power_Voltage; //2个字节
 
     Mpu6050_Data Accelerometer; //6个字节
     Mpu6050_Data Gyroscope;     //6个字节
 
+    short Power_Voltage; //2个字节
     ControlData control_data; //8个字节
     // unsigned char check_sum; //校验位 1个字节
     unsigned char Frame_Tail; //1个字节
