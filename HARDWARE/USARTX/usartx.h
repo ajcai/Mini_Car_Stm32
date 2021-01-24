@@ -11,7 +11,7 @@
 
 #define FRAME_HEADER 0X7B //发送数据的帧头
 #define FRAME_TAIL 0X7D   //发送数据的帧头
-#define SEND_DATA_SIZE 24
+#define SEND_DATA_SIZE 32
 #define RECEIVE_DATA_SIZE 11
 //#pragma pack(1)
 /*****用于存放陀螺仪加速度计三轴数据结构体*****/
@@ -21,6 +21,13 @@ typedef struct __Mpu6050_Data_
   short Y_data; //2个字节
   short Z_data; //2个字节
 } Mpu6050_Data;
+
+/*****用于存放遥控数据结构体*****/
+typedef struct __Control_Data_
+{
+  unsigned char Data[8]; //8个字节
+} ControlData;
+
 /*******串口发送数据的结构体************/
 typedef struct _SEND_DATA_
 {
@@ -28,14 +35,17 @@ typedef struct _SEND_DATA_
   struct _Sensor_Str_
   {
     unsigned char Frame_Header; //1个字节
-    short X_speed;              //2个字节
-    short Y_speed;              //2个字节
-    short Z_speed;              //2个字节
-    short Power_Voltage;        //2个字节
+    // unsigned char Flag_Stop; //电机状态 1个字节
+    short X_speed;       //2个字节
+    short Y_speed;       //2个字节
+    short Z_speed;       //2个字节
+    short Power_Voltage; //2个字节
 
     Mpu6050_Data Accelerometer; //6个字节
     Mpu6050_Data Gyroscope;     //6个字节
 
+    ControlData control_data; //8个字节
+    // unsigned char check_sum; //校验位 1个字节
     unsigned char Frame_Tail; //1个字节
   } Sensor_Str;
 
