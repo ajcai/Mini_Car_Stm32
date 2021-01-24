@@ -1,17 +1,17 @@
  #include "DataScope_DP.h"
-unsigned char DataScope_OutPut_Buffer[42] = {0};	   //´®¿Ú·¢ËÍ»º³åÇø
+unsigned char DataScope_OutPut_Buffer[42] = {0};	   //ä¸²å£å‘é€ç¼“å†²åŒº
 
 
-//º¯ÊıËµÃ÷£º½«µ¥¾«¶È¸¡µãÊı¾İ×ª³É4×Ö½ÚÊı¾İ²¢´æÈëÖ¸¶¨µØÖ· 
-//¸½¼ÓËµÃ÷£ºÓÃ»§ÎŞĞèÖ±½Ó²Ù×÷´Ëº¯Êı 
-//target:Ä¿±êµ¥¾«¶ÈÊı¾İ
-//buf:´ıĞ´ÈëÊı×é
-//beg:Ö¸¶¨´ÓÊı×éµÚ¼¸¸öÔªËØ¿ªÊ¼Ğ´Èë
-//º¯ÊıÎŞ·µ»Ø 
+//å‡½æ•°è¯´æ˜ï¼šå°†å•ç²¾åº¦æµ®ç‚¹æ•°æ®è½¬æˆ4å­—èŠ‚æ•°æ®å¹¶å­˜å…¥æŒ‡å®šåœ°å€ 
+//é™„åŠ è¯´æ˜ï¼šç”¨æˆ·æ— éœ€ç›´æ¥æ“ä½œæ­¤å‡½æ•° 
+//target:ç›®æ ‡å•ç²¾åº¦æ•°æ®
+//buf:å¾…å†™å…¥æ•°ç»„
+//beg:æŒ‡å®šä»æ•°ç»„ç¬¬å‡ ä¸ªå…ƒç´ å¼€å§‹å†™å…¥
+//å‡½æ•°æ— è¿”å› 
 void Float2Byte(float *target,unsigned char *buf,unsigned char beg)
 {
     unsigned char *point;
-    point = (unsigned char*)target;	  //µÃµ½floatµÄµØÖ·
+    point = (unsigned char*)target;	  //å¾—åˆ°floatçš„åœ°å€
     buf[beg]   = point[0];
     buf[beg+1] = point[1];
     buf[beg+2] = point[2];
@@ -19,13 +19,13 @@ void Float2Byte(float *target,unsigned char *buf,unsigned char beg)
 }
  
  
-//º¯ÊıËµÃ÷£º½«´ı·¢ËÍÍ¨µÀµÄµ¥¾«¶È¸¡µãÊı¾İĞ´Èë·¢ËÍ»º³åÇø
-//Data£ºÍ¨µÀÊı¾İ
-//Channel£ºÑ¡ÔñÍ¨µÀ£¨1-10£©
-//º¯ÊıÎŞ·µ»Ø 
+//å‡½æ•°è¯´æ˜ï¼šå°†å¾…å‘é€é€šé“çš„å•ç²¾åº¦æµ®ç‚¹æ•°æ®å†™å…¥å‘é€ç¼“å†²åŒº
+//Dataï¼šé€šé“æ•°æ®
+//Channelï¼šé€‰æ‹©é€šé“ï¼ˆ1-10ï¼‰
+//å‡½æ•°æ— è¿”å› 
 void DataScope_Get_Channel_Data(float Data,unsigned char Channel)
 {
-	if ( (Channel > 10) || (Channel == 0) ) return;  //Í¨µÀ¸öÊı´óÓÚ10»òµÈÓÚ0£¬Ö±½ÓÌø³ö£¬²»Ö´ĞĞº¯Êı
+	if ( (Channel > 10) || (Channel == 0) ) return;  //é€šé“ä¸ªæ•°å¤§äº10æˆ–ç­‰äº0ï¼Œç›´æ¥è·³å‡ºï¼Œä¸æ‰§è¡Œå‡½æ•°
   else
   {
      switch (Channel)
@@ -45,16 +45,16 @@ void DataScope_Get_Channel_Data(float Data,unsigned char Channel)
 }
 
 
-//º¯ÊıËµÃ÷£ºÉú³É DataScopeV1.0 ÄÜÕıÈ·Ê¶±ğµÄÖ¡¸ñÊ½
-//Channel_Number£¬ĞèÒª·¢ËÍµÄÍ¨µÀ¸öÊı
-//·µ»Ø·¢ËÍ»º³åÇøÊı¾İ¸öÊı
-//·µ»Ø0±íÊ¾Ö¡¸ñÊ½Éú³ÉÊ§°Ü 
+//å‡½æ•°è¯´æ˜ï¼šç”Ÿæˆ DataScopeV1.0 èƒ½æ­£ç¡®è¯†åˆ«çš„å¸§æ ¼å¼
+//Channel_Numberï¼Œéœ€è¦å‘é€çš„é€šé“ä¸ªæ•°
+//è¿”å›å‘é€ç¼“å†²åŒºæ•°æ®ä¸ªæ•°
+//è¿”å›0è¡¨ç¤ºå¸§æ ¼å¼ç”Ÿæˆå¤±è´¥ 
 unsigned char DataScope_Data_Generate(unsigned char Channel_Number)
 {
-	if ( (Channel_Number > 10) || (Channel_Number == 0) ) { return 0; }  //Í¨µÀ¸öÊı´óÓÚ10»òµÈÓÚ0£¬Ö±½ÓÌø³ö£¬²»Ö´ĞĞº¯Êı
+	if ( (Channel_Number > 10) || (Channel_Number == 0) ) { return 0; }  //é€šé“ä¸ªæ•°å¤§äº10æˆ–ç­‰äº0ï¼Œç›´æ¥è·³å‡ºï¼Œä¸æ‰§è¡Œå‡½æ•°
   else
   {	
-	 DataScope_OutPut_Buffer[0] = '$';  //Ö¡Í·
+	 DataScope_OutPut_Buffer[0] = '$';  //å¸§å¤´
 		
 	 switch(Channel_Number)   
    { 

@@ -2,11 +2,11 @@
 #define __EXIT_H	 
 #include "sys.h"
   /**************************************************************************
-���ߣ�ƽ��С��֮��
-�ҵ��Ա�С�꣺http://shop114407458.taobao.com/
+作者：平衡小车之家
+我的淘宝小店：http://shop114407458.taobao.com/
 **************************************************************************/
-#define INT PBin(15)   //PB5���ӵ�MPU6050���ж�����
-void EXTI_Init(void);	//�ⲿ�жϳ�ʼ��		 					    
+#define INT PBin(15)   //PB5连接到MPU6050的中断引脚
+void EXTI_Init(void);	//外部中断初始化		 					    
 #endif
 
 

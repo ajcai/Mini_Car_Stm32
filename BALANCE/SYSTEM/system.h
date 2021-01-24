@@ -1,16 +1,16 @@
 #ifndef __SYSTEM_H
 #define __SYSTEM_H
 
-/* freertos ÅäÖÃÎÄ¼ş */
+/* freertos é…ç½®æ–‡ä»¶ */
 #include "FreeRTOSConfig.h"
-/*FreeRTOSÏà¹ØÍ·ÎÄ¼ş*/
+/*FreeRTOSç›¸å…³å¤´æ–‡ä»¶*/
 #include "FreeRTOS.h"
 #include "stm32f10x.h"
 #include "task.h"
 #include "queue.h"
 #include "timers.h"
 #include "semphr.h"
-/*ÍâÉèµÄÏà¹ØÍ·ÎÄ¼ş*/
+/*å¤–è®¾çš„ç›¸å…³å¤´æ–‡ä»¶*/
 #include "sys.h"
 #include "delay.h"
 #include "usart.h"
@@ -43,18 +43,18 @@ typedef enum
 
 typedef struct  
 {
-float Encoder;       //±àÂëÆ÷ÊıÖµ
-float Motor_Pwm;     //µç»úPWMÊıÖµ
-float Target;        //µç»úÄ¿±êËÙ¶ÈÖµ
-float Velocity_KP;   //ËÙ¶È¿ØÖÆPID²ÎÊı
-float	Velocity_KI;   //ËÙ¶È¿ØÖÆPID²ÎÊı
+float Encoder;       //ç¼–ç å™¨æ•°å€¼
+float Motor_Pwm;     //ç”µæœºPWMæ•°å€¼
+float Target;        //ç”µæœºç›®æ ‡é€Ÿåº¦å€¼
+float Velocity_KP;   //é€Ÿåº¦æ§åˆ¶PIDå‚æ•°
+float	Velocity_KI;   //é€Ÿåº¦æ§åˆ¶PIDå‚æ•°
 }Motor_parameter;
 
 typedef struct  
 {
-float VX;    //´æ·ÅÆ½»¬¿ØÖÆ´¦ÀíºóµÄÊı¾İ
-float VY;    //´æ·ÅÆ½»¬¿ØÖÆ´¦ÀíºóµÄÊı¾İ
-float VZ;    //´æ·ÅÆ½»¬¿ØÖÆ´¦ÀíºóµÄÊı¾İ
+float VX;    //å­˜æ”¾å¹³æ»‘æ§åˆ¶å¤„ç†åçš„æ•°æ®
+float VY;    //å­˜æ”¾å¹³æ»‘æ§åˆ¶å¤„ç†åçš„æ•°æ®
+float VZ;    //å­˜æ”¾å¹³æ»‘æ§åˆ¶å¤„ç†åçš„æ•°æ®
 }Smooth_Control;
 
 extern long int ErrorCode; 
@@ -71,19 +71,19 @@ extern float PS2_LX,PS2_LY,PS2_RX,PS2_RY,PS2_KEY;
 extern unsigned char temp_show;
 extern u8 Car_Mode;
 extern int Divisor_Mode;
-extern float Wheel_spacing; //Ö÷¶¯ÂÖÂÖ¾à 
-extern float Encoder_precision;//±àÂëÆ÷¾«¶È
-extern float Wheel_perimeter; //ÂÖ×ÓÖÜ³¤
-extern float Axle_spacing; //ÂóÂÖÇ°ºóÖáÖá¾à
-extern float Omni_turn_radiaus; //È«ÏòÂÖ×ªÍä°ë¾¶
+extern float Wheel_spacing; //ä¸»åŠ¨è½®è½®è· 
+extern float Encoder_precision;//ç¼–ç å™¨ç²¾åº¦
+extern float Wheel_perimeter; //è½®å­å‘¨é•¿
+extern float Axle_spacing; //éº¦è½®å‰åè½´è½´è·
+extern float Omni_turn_radiaus; //å…¨å‘è½®è½¬å¼¯åŠå¾„
 extern Motor_parameter MOTOR_A,MOTOR_B,MOTOR_C,MOTOR_D;
-extern int Servo; //¶æ»úPWMÖµ
+extern int Servo; //èˆµæœºPWMå€¼
 extern Smooth_Control smooth_control;
 extern int robot_mode_check_flag;
 
 void systemInit(void);
-#define CONTROL_DELAY		1000 //»»Ëã³ÉÊµ¼ÊÊ±¼äÊÇ10Ãë
-#define CAR_NUMBER    6 //Ò»¹²¶àÉÙ¸ö³µ
+#define CONTROL_DELAY		1000 //æ¢ç®—æˆå®é™…æ—¶é—´æ˜¯10ç§’
+#define CAR_NUMBER    6 //ä¸€å…±å¤šå°‘ä¸ªè½¦
 #define RATE_1_HZ		  1
 #define RATE_5_HZ		  5
 #define RATE_10_HZ		10
@@ -97,7 +97,7 @@ void systemInit(void);
 #define RATE_1000_HZ 	1000
 
 
-/*Ò»Ğ©C¿âº¯ÊıµÄÏà¹ØÍ·ÎÄ¼ş*/
+/*ä¸€äº›Cåº“å‡½æ•°çš„ç›¸å…³å¤´æ–‡ä»¶*/
 #include <stdio.h> 
 #include <stdint.h>
 #include <stdlib.h>

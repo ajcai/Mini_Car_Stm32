@@ -1,6 +1,6 @@
 /**************************************************************************
-作者：平衡小车之家
-我的淘宝小店：http://shop114407458.taobao.com/
+浣滆�咃細骞宠　灏忚溅涔嬪
+鎴戠殑娣樺疂灏忓簵锛歨ttp://shop114407458.taobao.com/
 **************************************************************************/
 #ifndef __MOTOR_H
 #define __MOTOR_H
@@ -68,7 +68,7 @@
 #define EN     PEin(0)  
 
 #define Servo_PWM  TIM1->CCR4
-#define SERVO_INIT 1500 //舵机零点
+#define SERVO_INIT 1500 //鑸垫満闆剁偣
 
 void Enable_Pin(void);
 void MiniBalance_PWM_Init(u16 arr,u16 psc);

@@ -2,10 +2,10 @@
 #define __BALANCE_H			  	 
 #include "sys.h"
 #include "system.h"
-#define BALANCE_TASK_PRIO		4     //ÈÎÎñÓÅÏÈ¼¶
-#define BALANCE_STK_SIZE 		512   //ÈÎÎñ¶ÑÕ»´óĞ¡
+#define BALANCE_TASK_PRIO		4     //ä»»åŠ¡ä¼˜å…ˆçº§
+#define BALANCE_STK_SIZE 		512   //ä»»åŠ¡å †æ ˆå¤§å°
 
-//È«ÏòÂÖ»úÆ÷ÈËÊıÑ§Ä£ĞÍ²ÎÊı
+//å…¨å‘è½®æœºå™¨äººæ•°å­¦æ¨¡å‹å‚æ•°
 #define X_PARAMETER    (sqrt(3)/2.f)               
 #define Y_PARAMETER    (0.5f)    
 #define L_PARAMETER    (1.0f)   

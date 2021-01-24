@@ -3,16 +3,16 @@
 #include "sys.h"	    
 #include "system.h"
  
-//CAN1½ÓÊÕRX0ÖĞ¶ÏÊ¹ÄÜ
-#define CAN1_RX0_INT_ENABLE	1		//0,²»Ê¹ÄÜ;1,Ê¹ÄÜ.								    		
+//CAN1æ¥æ”¶RX0ä¸­æ–­ä½¿èƒ½
+#define CAN1_RX0_INT_ENABLE	1		//0,ä¸ä½¿èƒ½;1,ä½¿èƒ½.								    		
 
-u8 CAN1_Mode_Init(u8 tsjw,u8 tbs2,u8 tbs1,u16 brp,u8 mode);//CAN1³õÊ¼»¯
-u8 CAN1_Tx_Msg(u32 id,u8 ide,u8 rtr,u8 len,u8 *dat);		//·¢ËÍÊı¾İ
-u8 CAN1_Msg_Pend(u8 fifox);								//²éÑ¯ÓÊÏä±¨ÎÄ
-void CAN1_Rx_Msg(u8 fifox,u32 *id,u8 *ide,u8 *rtr,u8 *len,u8 *dat);//½ÓÊÕÊı¾İ
-u8 CAN1_Tx_Staus(u8 mbox);  								//·µ»Ø·¢ËÍ×´Ì¬
-u8 CAN1_Send_Msg(u8* msg,u8 len);						//·¢ËÍÊı¾İ
-u8 CAN1_Receive_Msg(u8 *buf);							//½ÓÊÕÊı¾İ
+u8 CAN1_Mode_Init(u8 tsjw,u8 tbs2,u8 tbs1,u16 brp,u8 mode);//CAN1åˆå§‹åŒ–
+u8 CAN1_Tx_Msg(u32 id,u8 ide,u8 rtr,u8 len,u8 *dat);		//å‘é€æ•°æ®
+u8 CAN1_Msg_Pend(u8 fifox);								//æŸ¥è¯¢é‚®ç®±æŠ¥æ–‡
+void CAN1_Rx_Msg(u8 fifox,u32 *id,u8 *ide,u8 *rtr,u8 *len,u8 *dat);//æ¥æ”¶æ•°æ®
+u8 CAN1_Tx_Staus(u8 mbox);  								//è¿”å›å‘é€çŠ¶æ€
+u8 CAN1_Send_Msg(u8* msg,u8 len);						//å‘é€æ•°æ®
+u8 CAN1_Receive_Msg(u8 *buf);							//æ¥æ”¶æ•°æ®
 
 u8 CAN1_Send_MsgTEST(u8* msg,u8 len);
 u8 CAN1_Send_Num(u32 id,u8* msg);

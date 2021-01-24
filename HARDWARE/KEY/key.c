@@ -1,41 +1,41 @@
 #include "key.h"
 
 /**************************************************************************
-º¯Êı¹¦ÄÜ£º°´¼ü³õÊ¼»¯
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ 
+å‡½æ•°åŠŸèƒ½ï¼šæŒ‰é”®åˆå§‹åŒ–
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ—  
 **************************************************************************/
 void KEY_Init(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD|RCC_APB2Periph_GPIOE, ENABLE); //Ê¹ÄÜ¶Ë¿ÚÊ±ÖÓ
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD|RCC_APB2Periph_GPIOE, ENABLE); //ä½¿èƒ½ç«¯å£æ—¶é’Ÿ
 
-	GPIO_InitStructure.GPIO_Pin =KEY_PIN;			//¶Ë¿ÚÅäÖÃ
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;	//ÉÏÀ­ÊäÈë
-	GPIO_Init(KEY_PORT, &GPIO_InitStructure);		//¸ù¾İÉè¶¨²ÎÊı³õÊ¼»¯GPIOD
+	GPIO_InitStructure.GPIO_Pin =KEY_PIN;			//ç«¯å£é…ç½®
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;	//ä¸Šæ‹‰è¾“å…¥
+	GPIO_Init(KEY_PORT, &GPIO_InitStructure);		//æ ¹æ®è®¾å®šå‚æ•°åˆå§‹åŒ–GPIOD
 	
 } 
 /**************************************************************************
-º¯Êı¹¦ÄÜ£º°´¼üÉ¨Ãè
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£º°´¼ü×´Ì¬ 0£ºÎŞ¶¯×÷ 1£ºµ¥»÷ 
+å‡½æ•°åŠŸèƒ½ï¼šæŒ‰é”®æ‰«æ
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæŒ‰é”®çŠ¶æ€ 0ï¼šæ— åŠ¨ä½œ 1ï¼šå•å‡» 
 **************************************************************************/
 u8 click(void)
 {
-			static u8 flag_key=1;//°´¼ü°´ËÉ¿ª±êÖ¾
+			static u8 flag_key=1;//æŒ‰é”®æŒ‰æ¾å¼€æ ‡å¿—
 			if(flag_key&&KEY==0)
 			{
 			flag_key=0;
-			return 1;	// °´¼ü°´ÏÂ
+			return 1;	// æŒ‰é”®æŒ‰ä¸‹
 			}
 			else if(1==KEY)			flag_key=1;
-			return 0;//ÎŞ°´¼ü°´ÏÂ
+			return 0;//æ— æŒ‰é”®æŒ‰ä¸‹
 }
 
 /**************************************************************************
-º¯Êı¹¦ÄÜ£ºÑÓ³Ùº¯Êı
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ »Ø Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šå»¶è¿Ÿå‡½æ•°
+å…¥å£å‚æ•°ï¼šæ— 
+è¿” å› å€¼ï¼šæ— 
 **************************************************************************/
 void Delay_ms(void)
 {
@@ -46,15 +46,15 @@ void Delay_ms(void)
 	 }	
 }
 /**************************************************************************
-º¯Êı¹¦ÄÜ£º°´¼üÉ¨Ãè
-Èë¿Ú²ÎÊı£ºË«»÷µÈ´ıÊ±¼ä
-·µ»Ø  Öµ£º°´¼ü×´Ì¬ 0£ºÎŞ¶¯×÷ 1£ºµ¥»÷ 2£ºË«»÷ 
+å‡½æ•°åŠŸèƒ½ï¼šæŒ‰é”®æ‰«æ
+å…¥å£å‚æ•°ï¼šåŒå‡»ç­‰å¾…æ—¶é—´
+è¿”å›  å€¼ï¼šæŒ‰é”®çŠ¶æ€ 0ï¼šæ— åŠ¨ä½œ 1ï¼šå•å‡» 2ï¼šåŒå‡» 
 **************************************************************************/
 u8 click_N_Double (u8 time)
 {
 		static	u8 flag_key,count_key,double_key;	
 		static	u16 count_single,Forever_count;
-	  if(KEY==0)  Forever_count++;   //³¤°´±êÖ¾Î»Î´ÖÃ1
+	  if(KEY==0)  Forever_count++;   //é•¿æŒ‰æ ‡å¿—ä½æœªç½®1
      else        Forever_count=0;
 		if(0==KEY&&0==flag_key)		flag_key=1;	
 	  if(0==count_key)
@@ -68,7 +68,7 @@ u8 click_N_Double (u8 time)
 				{
 					double_key=0;
 					count_single=0;
-					return 2;//Ë«»÷Ö´ĞĞµÄÖ¸Áî
+					return 2;//åŒå‡»æ‰§è¡Œçš„æŒ‡ä»¤
 				}
 		}
 		if(1==KEY)			flag_key=0,count_key=0;
@@ -80,7 +80,7 @@ u8 click_N_Double (u8 time)
 			{
 			double_key=0;
 			count_single=0;	
-			return 1;//µ¥»÷Ö´ĞĞµÄÖ¸Áî
+			return 1;//å•å‡»æ‰§è¡Œçš„æŒ‡ä»¤
 			}
 			if(Forever_count>time)
 			{
@@ -94,7 +94,7 @@ u8 click_N_Double_MPU6050 (u8 time)
 {
 		static	u8 flag_key,count_key,double_key;	
 		static	u16 count_single,Forever_count;
-	  if(KEY==0)  Forever_count++;   //³¤°´±êÖ¾Î»Î´ÖÃ1
+	  if(KEY==0)  Forever_count++;   //é•¿æŒ‰æ ‡å¿—ä½æœªç½®1
      else        Forever_count=0;
 		if(0==KEY&&0==flag_key)		flag_key=1;	
 	  if(0==count_key)
@@ -108,7 +108,7 @@ u8 click_N_Double_MPU6050 (u8 time)
 				{
 					double_key=0;
 					count_single=0;
-					return 2;//Ë«»÷Ö´ĞĞµÄÖ¸Áî
+					return 2;//åŒå‡»æ‰§è¡Œçš„æŒ‡ä»¤
 				}
 		}
 		if(1==KEY)			flag_key=0,count_key=0;
@@ -120,7 +120,7 @@ u8 click_N_Double_MPU6050 (u8 time)
 			{
 			double_key=0;
 			count_single=0;	
-			return 1;//µ¥»÷Ö´ĞĞµÄÖ¸Áî
+			return 1;//å•å‡»æ‰§è¡Œçš„æŒ‡ä»¤
 			}
 			if(Forever_count>time)
 			{
@@ -132,22 +132,22 @@ u8 click_N_Double_MPU6050 (u8 time)
 }
 
 /**************************************************************************
-º¯Êı¹¦ÄÜ£º³¤°´¼ì²â
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£º°´¼ü×´Ì¬ 0£ºÎŞ¶¯×÷ 1£º³¤°´2s
+å‡½æ•°åŠŸèƒ½ï¼šé•¿æŒ‰æ£€æµ‹
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæŒ‰é”®çŠ¶æ€ 0ï¼šæ— åŠ¨ä½œ 1ï¼šé•¿æŒ‰2s
 **************************************************************************/
 u8 Long_Press(void)
 {
 			static u16 Long_Press_count,Long_Press;
-	    if(Long_Press==0&&KEY==0)  Long_Press_count++;   //³¤°´±êÖ¾Î»Î´ÖÃ1
+	    if(Long_Press==0&&KEY==0)  Long_Press_count++;   //é•¿æŒ‰æ ‡å¿—ä½æœªç½®1
       else                       Long_Press_count=0; 
-		  if(Long_Press_count>15)	//3Ãë	
+		  if(Long_Press_count>15)	//3ç§’	
 			{
 				Long_Press=1;	
 				Long_Press_count=0;
 				return 1;
 			}				
-			 if(Long_Press==1)     //³¤°´±êÖ¾Î»ÖÃ1
+			 if(Long_Press==1)     //é•¿æŒ‰æ ‡å¿—ä½ç½®1
 			{
 				  Long_Press=0;
 			}

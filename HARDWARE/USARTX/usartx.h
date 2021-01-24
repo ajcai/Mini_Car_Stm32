@@ -9,34 +9,34 @@
 #define DATA_STK_SIZE   512 
 #define DATA_TASK_PRIO  4
 
-#define FRAME_HEADER 0X7B //·¢ËÍÊı¾İµÄÖ¡Í·
-#define FRAME_TAIL 0X7D //·¢ËÍÊı¾İµÄÖ¡Í·
+#define FRAME_HEADER 0X7B //å‘é€æ•°æ®çš„å¸§å¤´
+#define FRAME_TAIL 0X7D //å‘é€æ•°æ®çš„å¸§å¤´
 #define SEND_DATA_SIZE 24
 #define RECEIVE_DATA_SIZE 11
 //#pragma pack(1)
-/*****ÓÃÓÚ´æ·ÅÍÓÂİÒÇ¼ÓËÙ¶È¼ÆÈıÖáÊı¾İ½á¹¹Ìå*****/
+/*****ç”¨äºå­˜æ”¾é™€èºä»ªåŠ é€Ÿåº¦è®¡ä¸‰è½´æ•°æ®ç»“æ„ä½“*****/
 typedef struct __Mpu6050_Data_ 
 {
-	short X_data;//2¸ö×Ö½Ú
-	short Y_data;//2¸ö×Ö½Ú
-	short Z_data;//2¸ö×Ö½Ú
+	short X_data;//2ä¸ªå­—èŠ‚
+	short Y_data;//2ä¸ªå­—èŠ‚
+	short Z_data;//2ä¸ªå­—èŠ‚
 }Mpu6050_Data;
-/*******´®¿Ú·¢ËÍÊı¾İµÄ½á¹¹Ìå************/
+/*******ä¸²å£å‘é€æ•°æ®çš„ç»“æ„ä½“************/
 typedef struct _SEND_DATA_  
 {
 	unsigned char buffer[SEND_DATA_SIZE];
 	struct _Sensor_Str_
 	{
-		unsigned char Frame_Header;//1¸ö×Ö½Ú
-		short X_speed;	           //4¸ö×Ö½Ú
-		short Y_speed;             //4¸ö×Ö½Ú
-		short Z_speed;             //4¸ö×Ö½Ú
-		short Power_Voltage;       //4¸ö×Ö½Ú
+		unsigned char Frame_Header;//1ä¸ªå­—èŠ‚
+		short X_speed;	           //4ä¸ªå­—èŠ‚
+		short Y_speed;             //4ä¸ªå­—èŠ‚
+		short Z_speed;             //4ä¸ªå­—èŠ‚
+		short Power_Voltage;       //4ä¸ªå­—èŠ‚
 		
-		Mpu6050_Data Accelerometer;//6¸ö×Ö½Ú
-		Mpu6050_Data Gyroscope;    //6¸ö×Ö½Ú
+		Mpu6050_Data Accelerometer;//6ä¸ªå­—èŠ‚
+		Mpu6050_Data Gyroscope;    //6ä¸ªå­—èŠ‚
 		
-		unsigned char Frame_Tail;  //1¸ö×Ö½Ú
+		unsigned char Frame_Tail;  //1ä¸ªå­—èŠ‚
 	}Sensor_Str;
 
 }SEND_DATA;
@@ -47,10 +47,10 @@ typedef struct _RECEIVE_DATA_
 	struct _Control_Str_
 	{
 		unsigned char Frame_Header;// 1
-		float X_speed;	          //4¸ö×Ö½Ú
-		float Y_speed;            //4¸ö×Ö½Ú
-		float Z_speed;            //4¸ö×Ö½Ú
-		unsigned char Frame_Tail;     //1¸ö×Ö½Ú
+		float X_speed;	          //4ä¸ªå­—èŠ‚
+		float Y_speed;            //4ä¸ªå­—èŠ‚
+		float Z_speed;            //4ä¸ªå­—èŠ‚
+		unsigned char Frame_Tail;     //1ä¸ªå­—èŠ‚
 	}Control_Str;
 
 }RECEIVE_DATA;

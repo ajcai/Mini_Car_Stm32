@@ -1,22 +1,22 @@
 /***********************************************
-¹«Ë¾£º¶«İ¸ÊĞÎ¢ºêÖÇÄÜ¿Æ¼¼ÓĞÏŞ¹«Ë¾
-Æ·ÅÆ£ºWHEELTEC
-¹ÙÍø£ºwheeltec.net
-ÌÔ±¦µêÆÌ£ºshop114407458.taobao.com 
-°æ±¾V1.1
-ĞŞ¸ÄÊ±¼ä£º2020-07-04
+å…¬å¸ï¼šä¸œèå¸‚å¾®å®æ™ºèƒ½ç§‘æŠ€æœ‰é™å…¬å¸
+å“ç‰Œï¼šWHEELTEC
+å®˜ç½‘ï¼šwheeltec.net
+æ·˜å®åº—é“ºï¼šshop114407458.taobao.com 
+ç‰ˆæœ¬V1.1
+ä¿®æ”¹æ—¶é—´ï¼š2020-07-04
 All rights reserved
 ***********************************************/
 #include "balance.h"
-int Time_count=0;            //¼ÆÊ±±äÁ¿
-int robot_mode_check_flag=0; //»úÆ÷ÈËÄ£Ê½ÊÇ·ñ³ö´í¼ì²â±êÖ¾Î»
-int EncoderA_Count=0, EncoderB_Count=0, EncoderC_Count=0, EncoderD_Count=0;                               //ÁªºÏÍÓÂİÒÇÊı¾İ¼ì²â±àÂëÆ÷ÓëÇı¶¯
-int MPU9250ErrorCount, MPU9250SensorCountA, MPU9250SensorCountB, MPU9250SensorCountC, MPU9250SensorCountD;//ÁªºÏÍÓÂİÒÇÊı¾İ¼ì²â±àÂëÆ÷ÓëÇı¶¯
-Encoder OriginalEncoder;     //±àÂëÆ÷Ô­Ê¼Êı¾İ
+int Time_count=0;            //è®¡æ—¶å˜é‡
+int robot_mode_check_flag=0; //æœºå™¨äººæ¨¡å¼æ˜¯å¦å‡ºé”™æ£€æµ‹æ ‡å¿—ä½
+int EncoderA_Count=0, EncoderB_Count=0, EncoderC_Count=0, EncoderD_Count=0;                               //è”åˆé™€èºä»ªæ•°æ®æ£€æµ‹ç¼–ç å™¨ä¸é©±åŠ¨
+int MPU9250ErrorCount, MPU9250SensorCountA, MPU9250SensorCountB, MPU9250SensorCountC, MPU9250SensorCountD;//è”åˆé™€èºä»ªæ•°æ®æ£€æµ‹ç¼–ç å™¨ä¸é©±åŠ¨
+Encoder OriginalEncoder;     //ç¼–ç å™¨åŸå§‹æ•°æ®
 /**************************************************************************
-º¯Êı¹¦ÄÜ£º¶Ô½ÓÊÕµ½Êı¾İ½øĞĞ´¦Àí
-Èë¿Ú²ÎÊı£ºXºÍY ZÖá·½ÏòµÄÔË¶¯ËÙ¶È
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šå¯¹æ¥æ”¶åˆ°æ•°æ®è¿›è¡Œå¤„ç†
+å…¥å£å‚æ•°ï¼šXå’ŒY Zè½´æ–¹å‘çš„è¿åŠ¨é€Ÿåº¦
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void Drive_Motor(float Vx,float Vy,float Vz)
 {
@@ -24,13 +24,13 @@ void Drive_Motor(float Vx,float Vy,float Vz)
 	
 	  if(Car_Mode==Mec_Car||Car_Mode==Omni_Car)
 		{
-			Smooth_control(Vx,Vy,Vz); //¶ÔÊäÈëËÙ¶È½øĞĞÆ½»¬´¦Àí		
-			Vx=smooth_control.VX;     //»ñÈ¡Æ½»¬´¦ÀíºóµÄÊı¾İ
+			Smooth_control(Vx,Vy,Vz); //å¯¹è¾“å…¥é€Ÿåº¦è¿›è¡Œå¹³æ»‘å¤„ç†		
+			Vx=smooth_control.VX;     //è·å–å¹³æ»‘å¤„ç†åçš„æ•°æ®
 			Vy=smooth_control.VY;
 			Vz=smooth_control.VZ;
 		}
 		
-	  //Âó¿ËÄÉÄ·ÂÖĞ¡³µ
+	  //éº¦å…‹çº³å§†è½®å°è½¦
 	  if (Car_Mode==Mec_Car) 
     {
 			MOTOR_A.Target   = +Vy+Vx-Vz*(Axle_spacing+Wheel_spacing);
@@ -38,88 +38,88 @@ void Drive_Motor(float Vx,float Vy,float Vz)
 			MOTOR_C.Target   = +Vy+Vx+Vz*(Axle_spacing+Wheel_spacing);
 			MOTOR_D.Target   = -Vy+Vx+Vz*(Axle_spacing+Wheel_spacing);
 		
-			MOTOR_A.Target=target_limit_float(MOTOR_A.Target,-amplitude,amplitude); //ËÙ¶ÈÏŞ·ù
-			MOTOR_B.Target=target_limit_float(MOTOR_B.Target,-amplitude,amplitude); //ËÙ¶ÈÏŞ·ù
-			MOTOR_C.Target=target_limit_float(MOTOR_C.Target,-amplitude,amplitude); //ËÙ¶ÈÏŞ·ù
-			MOTOR_D.Target=target_limit_float(MOTOR_D.Target,-amplitude,amplitude); //ËÙ¶ÈÏŞ·ù
+			MOTOR_A.Target=target_limit_float(MOTOR_A.Target,-amplitude,amplitude); //é€Ÿåº¦é™å¹…
+			MOTOR_B.Target=target_limit_float(MOTOR_B.Target,-amplitude,amplitude); //é€Ÿåº¦é™å¹…
+			MOTOR_C.Target=target_limit_float(MOTOR_C.Target,-amplitude,amplitude); //é€Ÿåº¦é™å¹…
+			MOTOR_D.Target=target_limit_float(MOTOR_D.Target,-amplitude,amplitude); //é€Ÿåº¦é™å¹…
 		} 
 		
-		//È«ÏòÂÖĞ¡³µ
+		//å…¨å‘è½®å°è½¦
 		else if (Car_Mode==Omni_Car) 
 		{
 			MOTOR_A.Target   =   Vy + Omni_turn_radiaus*Vz;
 			MOTOR_B.Target   =  -X_PARAMETER*Vx - Y_PARAMETER*Vy + Omni_turn_radiaus*Vz;
 			MOTOR_C.Target   =  +X_PARAMETER*Vx - Y_PARAMETER*Vy + Omni_turn_radiaus*Vz;
 		
-			MOTOR_A.Target=target_limit_float(MOTOR_A.Target,-amplitude,amplitude); //ËÙ¶ÈÏŞ·ù
-			MOTOR_B.Target=target_limit_float(MOTOR_B.Target,-amplitude,amplitude); //ËÙ¶ÈÏŞ·ù
-			MOTOR_C.Target=target_limit_float(MOTOR_C.Target,-amplitude,amplitude); //ËÙ¶ÈÏŞ·ù
+			MOTOR_A.Target=target_limit_float(MOTOR_A.Target,-amplitude,amplitude); //é€Ÿåº¦é™å¹…
+			MOTOR_B.Target=target_limit_float(MOTOR_B.Target,-amplitude,amplitude); //é€Ÿåº¦é™å¹…
+			MOTOR_C.Target=target_limit_float(MOTOR_C.Target,-amplitude,amplitude); //é€Ÿåº¦é™å¹…
 			MOTOR_D.Target=0;			
 		}
 		
-		//°¢¿ËÂüĞ¡³µ
+		//é˜¿å…‹æ›¼å°è½¦
 		else if (Car_Mode==Akm_Car) 
 		{
 			int K=1000;
 			float Ratio=1, Angle;
 			
 			Angle=Vz;
-			Angle=target_limit_float(Angle,-0.35f,0.35f);//¶æ»ú½Ç¶ÈÏŞ·ù
-			if(Angle<0)Ratio=1.054;//¶æ»ú×óÓÒÁ½±ß¶Ô³Æ»¯´¦Àí
+			Angle=target_limit_float(Angle,-0.35f,0.35f);//èˆµæœºè§’åº¦é™å¹…
+			if(Angle<0)Ratio=1.054;//èˆµæœºå·¦å³ä¸¤è¾¹å¯¹ç§°åŒ–å¤„ç†
 			else if(Angle>0)Ratio=0.838;
 			else Ratio=0;
 			
-			MOTOR_A.Target   = Vx*(1-Wheel_spacing*tan(Angle)/2/Axle_spacing);//Aµç»úÄ¿±ê
-			MOTOR_B.Target   = Vx*(1+Wheel_spacing*tan(Angle)/2/Axle_spacing);//Bµç»úÄ¿±ê
-			Servo=(SERVO_INIT-Angle*K*Ratio); //¶æ»úÄ¿±ê
+			MOTOR_A.Target   = Vx*(1-Wheel_spacing*tan(Angle)/2/Axle_spacing);//Aç”µæœºç›®æ ‡
+			MOTOR_B.Target   = Vx*(1+Wheel_spacing*tan(Angle)/2/Axle_spacing);//Bç”µæœºç›®æ ‡
+			Servo=(SERVO_INIT-Angle*K*Ratio); //èˆµæœºç›®æ ‡
 			
-			MOTOR_A.Target=target_limit_float(MOTOR_A.Target,-amplitude,amplitude); //µç»úÏŞ·ù
-			MOTOR_B.Target=target_limit_float(MOTOR_B.Target,-amplitude,amplitude); //µç»úÏŞ·ù
+			MOTOR_A.Target=target_limit_float(MOTOR_A.Target,-amplitude,amplitude); //ç”µæœºé™å¹…
+			MOTOR_B.Target=target_limit_float(MOTOR_B.Target,-amplitude,amplitude); //ç”µæœºé™å¹…
 			MOTOR_C.Target=0;
 			MOTOR_D.Target=0;
 			Servo=target_limit_int(Servo,900,2000);		
 		}
 		
-		//²îËÙĞ¡³µ
+		//å·®é€Ÿå°è½¦
 		else if (Car_Mode==Diff_Car) 
 		{
-			MOTOR_A.Target  = Vx - Vz * Wheel_spacing / 2.0f; //¼ÆËã³ö×óÂÖµÄÄ¿±êËÙ¶È
-		  MOTOR_B.Target =  Vx + Vz * Wheel_spacing / 2.0f; //¼ÆËã³öÓÒÂÖµÄÄ¿±êËÙ¶È
-		  MOTOR_A.Target=target_limit_float( MOTOR_A.Target,-amplitude,amplitude); //ËÙ¶ÈÏŞ·ù
-	    MOTOR_B.Target=target_limit_float( MOTOR_B.Target,-amplitude,amplitude); //ËÙ¶ÈÏŞ·ù	
+			MOTOR_A.Target  = Vx - Vz * Wheel_spacing / 2.0f; //è®¡ç®—å‡ºå·¦è½®çš„ç›®æ ‡é€Ÿåº¦
+		  MOTOR_B.Target =  Vx + Vz * Wheel_spacing / 2.0f; //è®¡ç®—å‡ºå³è½®çš„ç›®æ ‡é€Ÿåº¦
+		  MOTOR_A.Target=target_limit_float( MOTOR_A.Target,-amplitude,amplitude); //é€Ÿåº¦é™å¹…
+	    MOTOR_B.Target=target_limit_float( MOTOR_B.Target,-amplitude,amplitude); //é€Ÿåº¦é™å¹…	
 			MOTOR_C.Target=0;
 			MOTOR_D.Target=0;
 		}
 		
-		//ËÄÇı³µ
+		//å››é©±è½¦
 		else if(Car_Mode==FourWheel_Car) 
 		{	
-			MOTOR_A.Target  = Vx - Vz * (Wheel_spacing +  Axle_spacing) / 2.0f; //¼ÆËã³ö×óÂÖµÄÄ¿±êËÙ¶È
-			MOTOR_B.Target  = Vx - Vz * (Wheel_spacing +  Axle_spacing) / 2.0f; //¼ÆËã³ö×óÂÖµÄÄ¿±êËÙ¶È
-			MOTOR_C.Target  = Vx + Vz * (Wheel_spacing +  Axle_spacing) / 2.0f; //¼ÆËã³öÓÒÂÖµÄÄ¿±êËÙ¶È
-			MOTOR_D.Target  = Vx + Vz * (Wheel_spacing +  Axle_spacing) / 2.0f; //¼ÆËã³öÓÒÂÖµÄÄ¿±êËÙ¶È
+			MOTOR_A.Target  = Vx - Vz * (Wheel_spacing +  Axle_spacing) / 2.0f; //è®¡ç®—å‡ºå·¦è½®çš„ç›®æ ‡é€Ÿåº¦
+			MOTOR_B.Target  = Vx - Vz * (Wheel_spacing +  Axle_spacing) / 2.0f; //è®¡ç®—å‡ºå·¦è½®çš„ç›®æ ‡é€Ÿåº¦
+			MOTOR_C.Target  = Vx + Vz * (Wheel_spacing +  Axle_spacing) / 2.0f; //è®¡ç®—å‡ºå³è½®çš„ç›®æ ‡é€Ÿåº¦
+			MOTOR_D.Target  = Vx + Vz * (Wheel_spacing +  Axle_spacing) / 2.0f; //è®¡ç®—å‡ºå³è½®çš„ç›®æ ‡é€Ÿåº¦
 					
-			MOTOR_A.Target=target_limit_float( MOTOR_A.Target,-amplitude,amplitude); //ËÙ¶ÈÏŞ·ù
-			MOTOR_B.Target=target_limit_float( MOTOR_B.Target,-amplitude,amplitude); //ËÙ¶ÈÏŞ·ù
-			MOTOR_C.Target=target_limit_float( MOTOR_C.Target,-amplitude,amplitude); //ËÙ¶ÈÏŞ·ù
-			MOTOR_D.Target=target_limit_float( MOTOR_D.Target,-amplitude,amplitude); //ËÙ¶ÈÏŞ·ù		
+			MOTOR_A.Target=target_limit_float( MOTOR_A.Target,-amplitude,amplitude); //é€Ÿåº¦é™å¹…
+			MOTOR_B.Target=target_limit_float( MOTOR_B.Target,-amplitude,amplitude); //é€Ÿåº¦é™å¹…
+			MOTOR_C.Target=target_limit_float( MOTOR_C.Target,-amplitude,amplitude); //é€Ÿåº¦é™å¹…
+			MOTOR_D.Target=target_limit_float( MOTOR_D.Target,-amplitude,amplitude); //é€Ÿåº¦é™å¹…		
 		}
 		
-		//ÂÄ´ø³µ
+		//å±¥å¸¦è½¦
 		else if (Car_Mode==Tank_Car) 
 		{
-			MOTOR_A.Target  = Vx - Vz * (Wheel_spacing) / 2.0f;    //¼ÆËã³ö×óÂÖµÄÄ¿±êËÙ¶È
-		  MOTOR_B.Target =  Vx + Vz * (Wheel_spacing) / 2.0f;    //¼ÆËã³öÓÒÂÖµÄÄ¿±êËÙ¶È
-		  MOTOR_A.Target=target_limit_float( MOTOR_A.Target,-amplitude,amplitude); //ËÙ¶ÈÏŞ·ù
-	    MOTOR_B.Target=target_limit_float( MOTOR_B.Target,-amplitude,amplitude); //ËÙ¶ÈÏŞ·ù
+			MOTOR_A.Target  = Vx - Vz * (Wheel_spacing) / 2.0f;    //è®¡ç®—å‡ºå·¦è½®çš„ç›®æ ‡é€Ÿåº¦
+		  MOTOR_B.Target =  Vx + Vz * (Wheel_spacing) / 2.0f;    //è®¡ç®—å‡ºå³è½®çš„ç›®æ ‡é€Ÿåº¦
+		  MOTOR_A.Target=target_limit_float( MOTOR_A.Target,-amplitude,amplitude); //é€Ÿåº¦é™å¹…
+	    MOTOR_B.Target=target_limit_float( MOTOR_B.Target,-amplitude,amplitude); //é€Ÿåº¦é™å¹…
 			MOTOR_C.Target=0;
 			MOTOR_D.Target=0;
 		}
 }
 /**************************************************************************
-º¯Êı¹¦ÄÜ£ººËĞÄ¿ØÖÆÏà¹Ø
-Èë¿Ú²ÎÊı£º
-·µ»Ø  Öµ£º 
+å‡½æ•°åŠŸèƒ½ï¼šæ ¸å¿ƒæ§åˆ¶ç›¸å…³
+å…¥å£å‚æ•°ï¼š
+è¿”å›  å€¼ï¼š 
 **************************************************************************/
 void Balance_task(void *pvParameters)
 { 
@@ -127,71 +127,71 @@ void Balance_task(void *pvParameters)
 	  //Check=1,Checking=1,Checked=1,CheckCount=(1+200*(CheckPhrase2));
     while(1)
     {	
-			vTaskDelayUntil(&lastWakeTime, F2T(RATE_100_HZ)); //´ËÈÎÎñÒÔ100HzµÄÆµÂÊÔËĞĞ£¨10ms¿ØÖÆÒ»´Î£©
+			vTaskDelayUntil(&lastWakeTime, F2T(RATE_100_HZ)); //æ­¤ä»»åŠ¡ä»¥100Hzçš„é¢‘ç‡è¿è¡Œï¼ˆ10msæ§åˆ¶ä¸€æ¬¡ï¼‰
 			if(Time_count<3000)Time_count++;
-			Get_Velocity_Form_Encoder();   //»ñÈ¡±àÂëÆ÷Êı¾İ
+			Get_Velocity_Form_Encoder();   //è·å–ç¼–ç å™¨æ•°æ®
 			if(Check==0)
 			{
-				if(APP_ON_Flag)           Get_RC();                           //APPÒ£¿Ø
-				else if(Remote_ON_Flag)   Remote_Control();                   //º½Ä£Ò£¿Ø
-				else if(PS2_ON_Flag)      PS2_control();                      //PS2ÊÖ±ú¿ØÖÆ
-				else                      Drive_Motor(Move_X, Move_Y, Move_Z);  //CAN¡¢´®¿Ú1¡¢´®¿Ú3(ROS)¿ØÖÆ
-				Key();                                                        //°´¼üĞŞ¸ÄÍÓÂİÒÇÁãµã
+				if(APP_ON_Flag)           Get_RC();                           //APPé¥æ§
+				else if(Remote_ON_Flag)   Remote_Control();                   //èˆªæ¨¡é¥æ§
+				else if(PS2_ON_Flag)      PS2_control();                      //PS2æ‰‹æŸ„æ§åˆ¶
+				else                      Drive_Motor(Move_X, Move_Y, Move_Z);  //CANã€ä¸²å£1ã€ä¸²å£3(ROS)æ§åˆ¶
+				Key();                                                        //æŒ‰é”®ä¿®æ”¹é™€èºä»ªé›¶ç‚¹
 				
-				if(Turn_Off(Voltage)==0)               //===Èç¹ûµç³ØµçÑ¹²»´æÔÚÒì³£
+				if(Turn_Off(Voltage)==0)               //===å¦‚æœç”µæ± ç”µå‹ä¸å­˜åœ¨å¼‚å¸¸
 				 { 			 	
-					MOTOR_A.Motor_Pwm=Incremental_PI_A(MOTOR_A.Encoder, MOTOR_A.Target);   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úA×îÖÕPWM
-					MOTOR_B.Motor_Pwm=Incremental_PI_B(MOTOR_B.Encoder, MOTOR_B.Target);   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úB×îÖÕPWM
-					MOTOR_C.Motor_Pwm=Incremental_PI_C(MOTOR_C.Encoder, MOTOR_C.Target);   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úC×îÖÕPWM
-					MOTOR_D.Motor_Pwm=Incremental_PI_D(MOTOR_D.Encoder, MOTOR_D.Target);   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úD×îÖÕPWM
-					//Limit_Pwm(5500);                     //===PWMÏŞ·ù ×î¸ßÊÇ7200£¬¿¼ÂÇµ½°²È«£¬×öÁËÏŞ·ù£¬¿ÉÒÔÔÚÍêÈ«µ÷ÊÔºÃÖ®ºó
+					MOTOR_A.Motor_Pwm=Incremental_PI_A(MOTOR_A.Encoder, MOTOR_A.Target);   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºAæœ€ç»ˆPWM
+					MOTOR_B.Motor_Pwm=Incremental_PI_B(MOTOR_B.Encoder, MOTOR_B.Target);   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºBæœ€ç»ˆPWM
+					MOTOR_C.Motor_Pwm=Incremental_PI_C(MOTOR_C.Encoder, MOTOR_C.Target);   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºCæœ€ç»ˆPWM
+					MOTOR_D.Motor_Pwm=Incremental_PI_D(MOTOR_D.Encoder, MOTOR_D.Target);   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºDæœ€ç»ˆPWM
+					//Limit_Pwm(5500);                     //===PWMé™å¹… æœ€é«˜æ˜¯7200ï¼Œè€ƒè™‘åˆ°å®‰å…¨ï¼Œåšäº†é™å¹…ï¼Œå¯ä»¥åœ¨å®Œå…¨è°ƒè¯•å¥½ä¹‹å
 					 
 					switch(Car_Mode)
 					{
-						case Mec_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //Âó¿ËÄÉÄ·ÂÖĞ¡³µ
-						case Omni_Car:      Set_Pwm( MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //È«ÏòÂÖĞ¡³µ
-						case Akm_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, Servo); break; //°¢¿ËÂüĞ¡³µ
-						case Diff_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //Á½ÂÖ²îËÙĞ¡³µ
-						case FourWheel_Car: Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //ËÄÇı³µ 
-						case Tank_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //ÂÄ´ø³µ
+						case Mec_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //éº¦å…‹çº³å§†è½®å°è½¦
+						case Omni_Car:      Set_Pwm( MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //å…¨å‘è½®å°è½¦
+						case Akm_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, Servo); break; //é˜¿å…‹æ›¼å°è½¦
+						case Diff_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //ä¸¤è½®å·®é€Ÿå°è½¦
+						case FourWheel_Car: Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //å››é©±è½¦ 
+						case Tank_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //å±¥å¸¦è½¦
 					}
 				 }
-				 else	Set_Pwm(0,0,0,0,0);    //===¸³Öµ¸øPWM¼Ä´æÆ÷ 
+				 else	Set_Pwm(0,0,0,0,0);    //===èµ‹å€¼ç»™PWMå¯„å­˜å™¨ 
 			 }	
      else CheckTask();			
 		 }  
 }
 
 /**************************************************************************
-º¯Êı¹¦ÄÜ£º×Ô¼ìÈÎÎñ
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šè‡ªæ£€ä»»åŠ¡
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 int CheckTask(void)
 {
-	 static int A,B,C,D; //¿ØÖÆÕı×ªÊµ¼Ê·´×ª0001 ¿ØÖÆ·´×ªÊµ¼ÊÕı×ª0010 ¿ØÖÆÕı×ªÊµ¼ÊÍ£×ª0100 ¿ØÖÆ·´×ªÊµ¼ÊÍ£×ª1000 ÕâÀï¶¨ÒåPWM¸øÕıÎªÕı×ª
-	 static float MaxVoltage=0, MinVoltage=20, Temperature, LastTemperature=3000, TemperatureBias; //×Ô¼ìÏà¹Ø±äÁ¿
-	 static int WireWrong=0; //×Ô¼ìÏà¹Ø±äÁ¿£¬µ¥»÷ÏßÊÇ·ñ½Ó´í±êÖ¾Î»
+	 static int A,B,C,D; //æ§åˆ¶æ­£è½¬å®é™…åè½¬0001 æ§åˆ¶åè½¬å®é™…æ­£è½¬0010 æ§åˆ¶æ­£è½¬å®é™…åœè½¬0100 æ§åˆ¶åè½¬å®é™…åœè½¬1000 è¿™é‡Œå®šä¹‰PWMç»™æ­£ä¸ºæ­£è½¬
+	 static float MaxVoltage=0, MinVoltage=20, Temperature, LastTemperature=3000, TemperatureBias; //è‡ªæ£€ç›¸å…³å˜é‡
+	 static int WireWrong=0; //è‡ªæ£€ç›¸å…³å˜é‡ï¼Œå•å‡»çº¿æ˜¯å¦æ¥é”™æ ‡å¿—ä½
 	 
-	 if(Check)CheckCount++;  //×Ô¼ìÈ·ÈÏµ¹¼ÆÊ±
+	 if(Check)CheckCount++;  //è‡ªæ£€ç¡®è®¤å€’è®¡æ—¶
 	 else CheckCount=0;
 	
-	 //È·ÈÏ³É¹¦£¬¿ªÊ¼×Ô¼ì
+	 //ç¡®è®¤æˆåŠŸï¼Œå¼€å§‹è‡ªæ£€
 	 if(Check&&Checking) 
 	 {
-		 int CheckPeriod=200, WaitPeriod=100; //Ã¿¸ö½×¶Î²â2Ãë£¬µÈ´ı1ÃëÔË¶¯ÎÈ¶¨ºó¿ªÊ¼¼ì²â
+		 int CheckPeriod=200, WaitPeriod=100; //æ¯ä¸ªé˜¶æ®µæµ‹2ç§’ï¼Œç­‰å¾…1ç§’è¿åŠ¨ç¨³å®šåå¼€å§‹æ£€æµ‹
 		 
-		 //µçÑ¹²¨¶¯¼ì²â
+		 //ç”µå‹æ³¢åŠ¨æ£€æµ‹
 		 if(Voltage>MaxVoltage) MaxVoltage=Voltage;
 		 if(Voltage<MinVoltage) MinVoltage=Voltage;
 		 
-		 //MPU9250¼ì²â
+		 //MPU9250æ£€æµ‹
 		 if(CheckCount<=(1+CheckPeriod*CheckPhrase2))
 		 {
 			 if(gyro[0]==0||gyro[1]==0||gyro[2]==0||accel[0]==0||accel[1]==0||accel[2]==0||MPU_Get_Temperature()==0)MPU9250ErrorCount++;
 		 }
 		 
-		 //ÎÂ¶È¼ì²â
+		 //æ¸©åº¦æ£€æµ‹
 		 TemperatureBias=MPU_Get_Temperature()-LastTemperature;
 		 if(TemperatureBias<10&&TemperatureBias>-10)
 		 {
@@ -199,8 +199,8 @@ int CheckTask(void)
 			 LastTemperature=Temperature;
 		 }
 		 
-		 //¿ª»·¿ØÖÆµç»ú¼ì²â
-		 if(0<CheckCount&&CheckCount<(CheckPeriod)) //²âÊÔAµç»úÕı×ª 
+		 //å¼€ç¯æ§åˆ¶ç”µæœºæ£€æµ‹
+		 if(0<CheckCount&&CheckCount<(CheckPeriod)) //æµ‹è¯•Aç”µæœºæ­£è½¬ 
 		 {
 			 if(CheckCount==1)Set_Pwm(0,0,0,0,1500);
 			 Set_Pwm(2000, 0, 0, 0, 1500);
@@ -208,11 +208,11 @@ int CheckTask(void)
 			 {
 				 static int ZeroACount=0;
 				 if(OriginalEncoder.A==0)ZeroACount++;
-				 if(OriginalEncoder.A<-3)A=A|1;    //µç»ú·´×ª		
-         if(ZeroACount>90)			 A=A|1<<2; //µç»úÍ£×ª
+				 if(OriginalEncoder.A<-3)A=A|1;    //ç”µæœºåè½¬		
+         if(ZeroACount>90)			 A=A|1<<2; //ç”µæœºåœè½¬
 			 }			 
 		 }
-		 else if(CheckPeriod<CheckCount&&CheckCount<(CheckPeriod*(2))) //²âÊÔAµç»ú·´×ª
+		 else if(CheckPeriod<CheckCount&&CheckCount<(CheckPeriod*(2))) //æµ‹è¯•Aç”µæœºåè½¬
 		 {
 			 if(CheckCount==(1+CheckPeriod))Set_Pwm(0,0,0,0,1500);
 			 Set_Pwm(-2000, 0, 0, 0, 1500);
@@ -220,12 +220,12 @@ int CheckTask(void)
 			 {
 				 static int ZeroACount=0;
 				 if(OriginalEncoder.A==0)ZeroACount++;
-				 if(OriginalEncoder.A>3)A=A|1<<1; //µç»úÕı×ª 	
-         if(ZeroACount>90)			A=A|1<<3; //µç»úÍ£×ª				 
+				 if(OriginalEncoder.A>3)A=A|1<<1; //ç”µæœºæ­£è½¬ 	
+         if(ZeroACount>90)			A=A|1<<3; //ç”µæœºåœè½¬				 
 			 }		 
 		 }
 		 
-		 else if(CheckPeriod*(2)<CheckCount&&CheckCount<(CheckPeriod*(3))) //²âÊÔBµç»úÕı×ª
+		 else if(CheckPeriod*(2)<CheckCount&&CheckCount<(CheckPeriod*(3))) //æµ‹è¯•Bç”µæœºæ­£è½¬
 		 {
 			 if(CheckCount==(1+CheckPeriod*2))Set_Pwm(0,0,0,0,1500);
 			 Set_Pwm(0, 2000, 0, 0, 1500);
@@ -233,11 +233,11 @@ int CheckTask(void)
 			 {
 				 static int ZeroBCount=0;
 				 if(OriginalEncoder.B==0)ZeroBCount++;
-				 if(OriginalEncoder.B<-3)B=B|1;    //µç»ú·´×ª 
-				 if(ZeroBCount>90)			 B=B|1<<2; //µç»úÍ£×ª
+				 if(OriginalEncoder.B<-3)B=B|1;    //ç”µæœºåè½¬ 
+				 if(ZeroBCount>90)			 B=B|1<<2; //ç”µæœºåœè½¬
 			 }			 
 		 }
-		 else if(CheckPeriod*(3)<CheckCount&&CheckCount<(CheckPeriod*(4))) //²âÊÔBµç»ú·´×ª
+		 else if(CheckPeriod*(3)<CheckCount&&CheckCount<(CheckPeriod*(4))) //æµ‹è¯•Bç”µæœºåè½¬
 		 {
 			 if(CheckCount==(1+CheckPeriod*3))Set_Pwm(0,0,0,0,1500);
 			 Set_Pwm(0, -2000, 0, 0, 1500);
@@ -245,63 +245,63 @@ int CheckTask(void)
 			 {
 				 static int ZeroBCount=0;
 				 if(OriginalEncoder.B==0)ZeroBCount++;
-				 if(OriginalEncoder.B>3)B=B|1<<1; //µç»úÕı×ª
-				 if(ZeroBCount>90)			B=B|1<<3; //µç»úÍ£×ª
+				 if(OriginalEncoder.B>3)B=B|1<<1; //ç”µæœºæ­£è½¬
+				 if(ZeroBCount>90)			B=B|1<<3; //ç”µæœºåœè½¬
 			 }			 
 		 }
 		 
 		 else if(CheckPeriod*(4)<CheckCount&&CheckCount<(CheckPeriod*5)&&(Car_Mode==Mec_Car||Car_Mode==Omni_Car||Car_Mode==FourWheel_Car)) 
 		 {
 			 if(CheckCount==(1+CheckPeriod*4))Set_Pwm(0,0,0,0,1500);    
-			 Set_Pwm(0, 0, 2000, 0, 1500);//²âÊÔCµç»úÕı×ª
+			 Set_Pwm(0, 0, 2000, 0, 1500);//æµ‹è¯•Cç”µæœºæ­£è½¬
 			 if(CheckCount>(CheckPeriod*5-WaitPeriod))
 			 {
 				 static int ZeroCCount=0;
 				 if(OriginalEncoder.C==0)ZeroCCount++;
-				 if(OriginalEncoder.C<-3)C=C|1;    //µç»ú·´×ª	
-         if(ZeroCCount>90)			 C=C|1<<2; //µç»úÍ£×ª				 
+				 if(OriginalEncoder.C<-3)C=C|1;    //ç”µæœºåè½¬	
+         if(ZeroCCount>90)			 C=C|1<<2; //ç”µæœºåœè½¬				 
 			 }				 
 		 }
 		 else if(CheckPeriod*(5)<CheckCount&&CheckCount<(CheckPeriod*6)&&(Car_Mode==Mec_Car||Car_Mode==Omni_Car||Car_Mode==FourWheel_Car)) 
 		 {
 			 if(CheckCount==(1+CheckPeriod*5))Set_Pwm(0,0,0,0,1500);
-			 Set_Pwm(0, 0, -2000, 0, 1500);//²âÊÔCµç»ú·´×ª
+			 Set_Pwm(0, 0, -2000, 0, 1500);//æµ‹è¯•Cç”µæœºåè½¬
 			 if(CheckCount>(CheckPeriod*6-WaitPeriod))
 			 {
 				 static int ZeroCCount=0;
 				 if(OriginalEncoder.C==0)ZeroCCount++;
-				 if(OriginalEncoder.C>3)C=C|1<<1; //µç»úÕı×ª
-				 if(ZeroCCount>90)			C=C|1<<3; //µç»úÍ£×ª	
+				 if(OriginalEncoder.C>3)C=C|1<<1; //ç”µæœºæ­£è½¬
+				 if(ZeroCCount>90)			C=C|1<<3; //ç”µæœºåœè½¬	
 			 }				 
 		 }
 		 
 		 else if(CheckPeriod*(6)<CheckCount&&CheckCount<(CheckPeriod*7)&&(Car_Mode==Mec_Car||Car_Mode==FourWheel_Car)) 
 		 {
 			 if(CheckCount==(1+CheckPeriod*6))Set_Pwm(0,0,0,0,1500);
-			 Set_Pwm(0, 0, 0, 2000, 1500);//²âÊÔDµç»úÕı×ª
+			 Set_Pwm(0, 0, 0, 2000, 1500);//æµ‹è¯•Dç”µæœºæ­£è½¬
 			 if(CheckCount>(CheckPeriod*7-WaitPeriod))
 			 {
 				 static int ZeroDCount=0;
 				 if(OriginalEncoder.D==0)ZeroDCount++;
-				 if(OriginalEncoder.D<-3)D=D|1;    //µç»ú·´×ª		
-         if(ZeroDCount>90)			 D=D|1<<2; //µç»úÍ£×ª					 
+				 if(OriginalEncoder.D<-3)D=D|1;    //ç”µæœºåè½¬		
+         if(ZeroDCount>90)			 D=D|1<<2; //ç”µæœºåœè½¬					 
 			 }	 
 		 }
 		 else if(CheckPeriod*(7)<CheckCount&&CheckCount<(CheckPeriod*8)&&(Car_Mode==Mec_Car||Car_Mode==FourWheel_Car)) 
 		 {
 			 if(CheckCount==(1+CheckPeriod*7))Set_Pwm(0,0,0,0,1500);
-			 Set_Pwm(0, 0, 0, -2000, 1500);//²âÊÔDµç»ú·´×ª
+			 Set_Pwm(0, 0, 0, -2000, 1500);//æµ‹è¯•Dç”µæœºåè½¬
 			 if(CheckCount>(CheckPeriod*8-WaitPeriod))
 			 {
 				 static int ZeroDCount=0;
 				 if(OriginalEncoder.D==0)ZeroDCount++;
-				 if(OriginalEncoder.D>3)D=D|1<<1; //µç»úÕı×ª
-				 if(ZeroDCount>90)			D=D|1<<3; //µç»úÍ£×ª	
+				 if(OriginalEncoder.D>3)D=D|1<<1; //ç”µæœºæ­£è½¬
+				 if(ZeroDCount>90)			D=D|1<<3; //ç”µæœºåœè½¬	
 			 }				 
 		 }
-		 //¿ª»·¿ØÖÆµç»ú¼ì²â		 
+		 //å¼€ç¯æ§åˆ¶ç”µæœºæ£€æµ‹		 
 		 
-		 //¼ì²â±àÂëÆ÷A ËÄÇı³µÍ¬Ê±¼ì²âAB
+		 //æ£€æµ‹ç¼–ç å™¨A å››é©±è½¦åŒæ—¶æ£€æµ‹AB
 		 else if(CheckPeriod*(CheckPhrase1)<CheckCount&&CheckCount<(CheckPeriod*(CheckPhrase1+1))) 
 		 {			 
 			 if(CheckCount==(1+CheckPeriod*(CheckPhrase1)))Set_Pwm(0,0,0,0,1500);
@@ -313,22 +313,22 @@ int CheckTask(void)
 			 MOTOR_B.Motor_Pwm=Incremental_PI_B(MOTOR_B.Encoder, MOTOR_B.Target);
 			 else 
 			 {
-				 MOTOR_B.Motor_Pwm=0;   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úB×îÖÕPWM
-				 MOTOR_C.Motor_Pwm=0;   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úC×îÖÕPWM
-				 MOTOR_D.Motor_Pwm=0;   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úD×îÖÕPWM
+				 MOTOR_B.Motor_Pwm=0;   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºBæœ€ç»ˆPWM
+				 MOTOR_C.Motor_Pwm=0;   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºCæœ€ç»ˆPWM
+				 MOTOR_D.Motor_Pwm=0;   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºDæœ€ç»ˆPWM
 			 }
 			 Limit_Pwm(3000);
 			 switch(Car_Mode)
 			 {
-				 case Mec_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //Âó¿ËÄÉÄ·ÂÖĞ¡³µ
-				 case Omni_Car:      Set_Pwm( MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //È«ÏòÂÖĞ¡³µ
-				 case Akm_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 1500 ); break; //°¢¿ËÂüĞ¡³µ
-				 case Diff_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //Á½ÂÖ²îËÙĞ¡³µ
-				 case FourWheel_Car: Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //ËÄÇı³µ 
-				 case Tank_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //ÂÄ´ø³µ
+				 case Mec_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //éº¦å…‹çº³å§†è½®å°è½¦
+				 case Omni_Car:      Set_Pwm( MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //å…¨å‘è½®å°è½¦
+				 case Akm_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 1500 ); break; //é˜¿å…‹æ›¼å°è½¦
+				 case Diff_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //ä¸¤è½®å·®é€Ÿå°è½¦
+				 case FourWheel_Car: Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //å››é©±è½¦ 
+				 case Tank_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //å±¥å¸¦è½¦
 			 }
 		 
-			 //9250ZÖáËÙ¶ÈÖµµÍ´ÎÊıÍ³¼Æ(´ÎÊı¹ı¸ß´ú±í³µÃ»ÓĞ±»Çı¶¯)£¬±àÂëÆ÷ËÙ¶ÈÖµµÍËÙ¶ÈÍ³¼Æ¡£
+			 //9250Zè½´é€Ÿåº¦å€¼ä½æ¬¡æ•°ç»Ÿè®¡(æ¬¡æ•°è¿‡é«˜ä»£è¡¨è½¦æ²¡æœ‰è¢«é©±åŠ¨)ï¼Œç¼–ç å™¨é€Ÿåº¦å€¼ä½é€Ÿåº¦ç»Ÿè®¡ã€‚
 			 if(CheckCount>(CheckPeriod*(CheckPhrase1+1)-WaitPeriod))
 			 {
 				 if(gyro[2]<500&&gyro[2]>-500)MPU9250SensorCountA++;		
@@ -341,7 +341,7 @@ int CheckTask(void)
 			 }				 
 		 }
 		 
-		 //¼ì²â±àÂëÆ÷B ËÄÇı³µÍ¬Ê±¼ì²éCD,²»¼ìB
+		 //æ£€æµ‹ç¼–ç å™¨B å››é©±è½¦åŒæ—¶æ£€æŸ¥CD,ä¸æ£€B
 		 else if(CheckPeriod*(CheckPhrase1+1)<CheckCount&&CheckCount<(CheckPeriod*(CheckPhrase1+2))) 
 		 {					 
 			 if(CheckCount==(1+CheckPeriod*(CheckPhrase1+1)))Set_Pwm(0,0,0,0,1500);
@@ -366,15 +366,15 @@ int CheckTask(void)
 			 Limit_Pwm(3000);
 			 switch(Car_Mode)
 			 {
-				 case Mec_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //Âó¿ËÄÉÄ·ÂÖĞ¡³µ
-				 case Omni_Car:      Set_Pwm( MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //È«ÏòÂÖĞ¡³µ
-				 case Akm_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 1500 ); break; //°¢¿ËÂüĞ¡³µ
-				 case Diff_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //Á½ÂÖ²îËÙĞ¡³µ
-				 case FourWheel_Car: Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //ËÄÇı³µ 
-				 case Tank_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //ÂÄ´ø³µ
+				 case Mec_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //éº¦å…‹çº³å§†è½®å°è½¦
+				 case Omni_Car:      Set_Pwm( MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //å…¨å‘è½®å°è½¦
+				 case Akm_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 1500 ); break; //é˜¿å…‹æ›¼å°è½¦
+				 case Diff_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //ä¸¤è½®å·®é€Ÿå°è½¦
+				 case FourWheel_Car: Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //å››é©±è½¦ 
+				 case Tank_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //å±¥å¸¦è½¦
 			 }
 		 
-			 //9250ZÖáËÙ¶ÈÖµµÍ´ÎÊıÍ³¼Æ(´ÎÊı¹ı¸ß´ú±í³µÃ»ÓĞ±»Çı¶¯)£¬±àÂëÆ÷ËÙ¶ÈÖµµÍËÙ¶ÈÍ³¼Æ¡£
+			 //9250Zè½´é€Ÿåº¦å€¼ä½æ¬¡æ•°ç»Ÿè®¡(æ¬¡æ•°è¿‡é«˜ä»£è¡¨è½¦æ²¡æœ‰è¢«é©±åŠ¨)ï¼Œç¼–ç å™¨é€Ÿåº¦å€¼ä½é€Ÿåº¦ç»Ÿè®¡ã€‚
 			 if(CheckCount>(CheckPeriod*(CheckPhrase1+2)-WaitPeriod))
 			 {
 				 if(Car_Mode==FourWheel_Car) 		
@@ -392,28 +392,28 @@ int CheckTask(void)
 			 }				 
 		 }
 		 
-		 //¼ì²â±àÂëÆ÷C
+		 //æ£€æµ‹ç¼–ç å™¨C
 		 else if(CheckPeriod*(CheckPhrase1+2)<CheckCount&&CheckCount<(CheckPeriod*(CheckPhrase1+3))&&(Car_Mode==Mec_Car||Car_Mode==Omni_Car)) 
 		 {				 
 			 if(CheckCount==(1+CheckPeriod*(CheckPhrase1+2)))Set_Pwm(0,0,0,0,1500);
 			 MOTOR_A.Target=0, MOTOR_B.Target=0, MOTOR_C.Target=-0.3, MOTOR_D.Target=0;
        		 
-			 MOTOR_A.Motor_Pwm=0;   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úA×îÖÕPWM
-			 MOTOR_B.Motor_Pwm=0;   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úB×îÖÕPWM
-			 MOTOR_C.Motor_Pwm=Incremental_PI_C(MOTOR_C.Encoder, MOTOR_C.Target);   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úC×îÖÕPWM
-			 MOTOR_D.Motor_Pwm=0;   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úD×îÖÕPWM
+			 MOTOR_A.Motor_Pwm=0;   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºAæœ€ç»ˆPWM
+			 MOTOR_B.Motor_Pwm=0;   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºBæœ€ç»ˆPWM
+			 MOTOR_C.Motor_Pwm=Incremental_PI_C(MOTOR_C.Encoder, MOTOR_C.Target);   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºCæœ€ç»ˆPWM
+			 MOTOR_D.Motor_Pwm=0;   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºDæœ€ç»ˆPWM
 			 Limit_Pwm(3000);
 			 switch(Car_Mode)
 			 {
-				 case Mec_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //Âó¿ËÄÉÄ·ÂÖĞ¡³µ
-				 case Omni_Car:      Set_Pwm( MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //È«ÏòÂÖĞ¡³µ
-				 case Akm_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, Servo); break; //°¢¿ËÂüĞ¡³µ
-				 case Diff_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //Á½ÂÖ²îËÙĞ¡³µ
-				 case FourWheel_Car: Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //ËÄÇı³µ 
-				 case Tank_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //ÂÄ´ø³µ
+				 case Mec_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //éº¦å…‹çº³å§†è½®å°è½¦
+				 case Omni_Car:      Set_Pwm( MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //å…¨å‘è½®å°è½¦
+				 case Akm_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, Servo); break; //é˜¿å…‹æ›¼å°è½¦
+				 case Diff_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //ä¸¤è½®å·®é€Ÿå°è½¦
+				 case FourWheel_Car: Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //å››é©±è½¦ 
+				 case Tank_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //å±¥å¸¦è½¦
 			 }
 			 
-			 //9250ZÖáËÙ¶ÈÖµµÍ´ÎÊıÍ³¼Æ(´ÎÊı¹ı¸ß´ú±í³µÃ»ÓĞ±»Çı¶¯)£¬±àÂëÆ÷ËÙ¶ÈÖµµÍËÙ¶ÈÍ³¼Æ¡£
+			 //9250Zè½´é€Ÿåº¦å€¼ä½æ¬¡æ•°ç»Ÿè®¡(æ¬¡æ•°è¿‡é«˜ä»£è¡¨è½¦æ²¡æœ‰è¢«é©±åŠ¨)ï¼Œç¼–ç å™¨é€Ÿåº¦å€¼ä½é€Ÿåº¦ç»Ÿè®¡ã€‚
 			 if(CheckCount>(CheckPeriod*(CheckPhrase1+3)-WaitPeriod))
 			 {
 				 if(gyro[2]<500&&gyro[2]>-500)MPU9250SensorCountC++;		
@@ -421,37 +421,37 @@ int CheckTask(void)
 			 }				 
 		 }
 		 
-		 //¼ì²â±àÂëÆ÷D
+		 //æ£€æµ‹ç¼–ç å™¨D
 		 else if(CheckPeriod*(CheckPhrase1+3)<CheckCount&&CheckCount<(CheckPeriod*(CheckPhrase1+4))&&(Car_Mode==Mec_Car)) 
 		 {		 
 			 if(CheckCount==(1+CheckPeriod*(CheckPhrase1+3)))Set_Pwm(0,0,0,0,1500);
 			 MOTOR_A.Target=0, MOTOR_B.Target=0, MOTOR_C.Target=0, MOTOR_D.Target=0.3;
 			 
-			 MOTOR_A.Motor_Pwm=0;   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úA×îÖÕPWM
-			 MOTOR_B.Motor_Pwm=0;   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úB×îÖÕPWM
-			 MOTOR_C.Motor_Pwm=0;   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úC×îÖÕPWM
-			 MOTOR_D.Motor_Pwm=Incremental_PI_D(MOTOR_D.Encoder, MOTOR_D.Target);   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úD×îÖÕPWM
+			 MOTOR_A.Motor_Pwm=0;   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºAæœ€ç»ˆPWM
+			 MOTOR_B.Motor_Pwm=0;   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºBæœ€ç»ˆPWM
+			 MOTOR_C.Motor_Pwm=0;   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºCæœ€ç»ˆPWM
+			 MOTOR_D.Motor_Pwm=Incremental_PI_D(MOTOR_D.Encoder, MOTOR_D.Target);   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºDæœ€ç»ˆPWM
 			 Limit_Pwm(3000);
 			 switch(Car_Mode)
 			 {
-				 case Mec_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //Âó¿ËÄÉÄ·ÂÖĞ¡³µ
-				 case Omni_Car:      Set_Pwm( MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //È«ÏòÂÖĞ¡³µ
-				 case Akm_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, Servo); break; //°¢¿ËÂüĞ¡³µ
-				 case Diff_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //Á½ÂÖ²îËÙĞ¡³µ
-				 case FourWheel_Car: Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //ËÄÇı³µ 
-				 case Tank_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //ÂÄ´ø³µ
+				 case Mec_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //éº¦å…‹çº³å§†è½®å°è½¦
+				 case Omni_Car:      Set_Pwm( MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //å…¨å‘è½®å°è½¦
+				 case Akm_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, Servo); break; //é˜¿å…‹æ›¼å°è½¦
+				 case Diff_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //ä¸¤è½®å·®é€Ÿå°è½¦
+				 case FourWheel_Car: Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //å››é©±è½¦ 
+				 case Tank_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //å±¥å¸¦è½¦
 			 }
 			 
-			 //9250ZÖáËÙ¶ÈÖµµÍ´ÎÊıÍ³¼Æ(´ÎÊı¹ı¸ß´ú±í³µÃ»ÓĞ±»Çı¶¯)£¬±àÂëÆ÷ËÙ¶ÈÖµµÍËÙ¶ÈÍ³¼Æ¡£
+			 //9250Zè½´é€Ÿåº¦å€¼ä½æ¬¡æ•°ç»Ÿè®¡(æ¬¡æ•°è¿‡é«˜ä»£è¡¨è½¦æ²¡æœ‰è¢«é©±åŠ¨)ï¼Œç¼–ç å™¨é€Ÿåº¦å€¼ä½é€Ÿåº¦ç»Ÿè®¡ã€‚
 			 if(CheckCount>(CheckPeriod*(CheckPhrase1+4)-WaitPeriod))
 			 {
-				 if(gyro[2]<400&&gyro[2]>-400)MPU9250SensorCountD++;	//ÂóÂÖDµç»ú½á¹¹ÉÏ¿ÉÄÜ´ø¶¯Ğ¡³µ×ª¶¯µÄÄÜÁ¦Èõ£¬¼ì²â¿íÈİ´¦Àí		
+				 if(gyro[2]<400&&gyro[2]>-400)MPU9250SensorCountD++;	//éº¦è½®Dç”µæœºç»“æ„ä¸Šå¯èƒ½å¸¦åŠ¨å°è½¦è½¬åŠ¨çš„èƒ½åŠ›å¼±ï¼Œæ£€æµ‹å®½å®¹å¤„ç†		
 				 if(MOTOR_D.Encoder<0.02&&MOTOR_D.Encoder>-0.02)EncoderD_Count++;				 
 			 }				 
 		 }
 		 
-		 //¼ì²âµç»úÏßÊÇ·ñ½Ó´í 
-		 else if((CheckPeriod*(CheckPhrase2-2))<CheckCount && CheckCount<(CheckPeriod*(CheckPhrase2-1))&&Car_Mode==Mec_Car) //ÂóÂÖ³µ²âÊÔÁ½´Îµç»úÏß
+		 //æ£€æµ‹ç”µæœºçº¿æ˜¯å¦æ¥é”™ 
+		 else if((CheckPeriod*(CheckPhrase2-2))<CheckCount && CheckCount<(CheckPeriod*(CheckPhrase2-1))&&Car_Mode==Mec_Car) //éº¦è½®è½¦æµ‹è¯•ä¸¤æ¬¡ç”µæœºçº¿
 		 {			 
 			 if(CheckCount==(1+CheckPeriod*(CheckPhrase2-2)))Set_Pwm(0,0,0,0,1500);
 			 else if(Car_Mode==Mec_Car)
@@ -459,13 +459,13 @@ int CheckTask(void)
 				 Drive_Motor(0, 0.3, 0);
 			 }
 			 			 
-			 MOTOR_A.Motor_Pwm=Incremental_PI_A(MOTOR_A.Encoder, MOTOR_A.Target);   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úA×îÖÕPWM
-			 MOTOR_B.Motor_Pwm=Incremental_PI_B(MOTOR_B.Encoder, MOTOR_B.Target);   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úB×îÖÕPWM
-			 MOTOR_C.Motor_Pwm=Incremental_PI_C(MOTOR_C.Encoder, MOTOR_C.Target);   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úC×îÖÕPWM
-			 MOTOR_D.Motor_Pwm=Incremental_PI_D(MOTOR_D.Encoder, MOTOR_D.Target);   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úD×îÖÕPWM
+			 MOTOR_A.Motor_Pwm=Incremental_PI_A(MOTOR_A.Encoder, MOTOR_A.Target);   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºAæœ€ç»ˆPWM
+			 MOTOR_B.Motor_Pwm=Incremental_PI_B(MOTOR_B.Encoder, MOTOR_B.Target);   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºBæœ€ç»ˆPWM
+			 MOTOR_C.Motor_Pwm=Incremental_PI_C(MOTOR_C.Encoder, MOTOR_C.Target);   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºCæœ€ç»ˆPWM
+			 MOTOR_D.Motor_Pwm=Incremental_PI_D(MOTOR_D.Encoder, MOTOR_D.Target);   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºDæœ€ç»ˆPWM
 			 Limit_Pwm(2000);
 
-			 Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    );  //Âó¿ËÄÉÄ·ÂÖĞ¡³µ
+			 Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    );  //éº¦å…‹çº³å§†è½®å°è½¦
 		 
 			 if(CheckCount>(CheckPeriod*(CheckPhrase2-1)-WaitPeriod))
 			 {
@@ -480,7 +480,7 @@ int CheckTask(void)
 				 if(gyro[2]>64000||gyro[2]<-64000)gyro[2]=501;
 
 				 if((gyro[2]>500||gyro[2]<-500)) WireWrongCount++;
-				 if(WireWrongCount>80)           WireWrong=1;//ErrorCode=ErrorCode|1<<15; //µç»úÏß½Ó´í£¬´íÎó´úÂëÂ¼Èë	 
+				 if(WireWrongCount>80)           WireWrong=1;//ErrorCode=ErrorCode|1<<15; //ç”µæœºçº¿æ¥é”™ï¼Œé”™è¯¯ä»£ç å½•å…¥	 
 			 }				 
 		 }
 		 else if((CheckPeriod*(CheckPhrase2-1))<CheckCount && CheckCount<(CheckPeriod*(CheckPhrase2))) 
@@ -503,19 +503,19 @@ int CheckTask(void)
 				 Drive_Motor(0.3,   0, 0);
 			 }
 			 			 
-			 MOTOR_A.Motor_Pwm=Incremental_PI_A(MOTOR_A.Encoder, MOTOR_A.Target);   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úA×îÖÕPWM
-			 MOTOR_B.Motor_Pwm=Incremental_PI_B(MOTOR_B.Encoder, MOTOR_B.Target);   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úB×îÖÕPWM
-			 MOTOR_C.Motor_Pwm=Incremental_PI_C(MOTOR_C.Encoder, MOTOR_C.Target);   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úC×îÖÕPWM
-			 MOTOR_D.Motor_Pwm=Incremental_PI_D(MOTOR_D.Encoder, MOTOR_D.Target);   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úD×îÖÕPWM
+			 MOTOR_A.Motor_Pwm=Incremental_PI_A(MOTOR_A.Encoder, MOTOR_A.Target);   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºAæœ€ç»ˆPWM
+			 MOTOR_B.Motor_Pwm=Incremental_PI_B(MOTOR_B.Encoder, MOTOR_B.Target);   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºBæœ€ç»ˆPWM
+			 MOTOR_C.Motor_Pwm=Incremental_PI_C(MOTOR_C.Encoder, MOTOR_C.Target);   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºCæœ€ç»ˆPWM
+			 MOTOR_D.Motor_Pwm=Incremental_PI_D(MOTOR_D.Encoder, MOTOR_D.Target);   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºDæœ€ç»ˆPWM
 			 Limit_Pwm(2000);
 			 switch(Car_Mode)
 			 {
-				 case Mec_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //Âó¿ËÄÉÄ·ÂÖĞ¡³µ
-				 case Omni_Car:      Set_Pwm( MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //È«ÏòÂÖĞ¡³µ
-				 case Akm_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, Servo); break; //°¢¿ËÂüĞ¡³µ
-				 case Diff_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //Á½ÂÖ²îËÙĞ¡³µ
-				 case FourWheel_Car: Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //ËÄÇı³µ 
-				 case Tank_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //ÂÄ´ø³µ
+				 case Mec_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //éº¦å…‹çº³å§†è½®å°è½¦
+				 case Omni_Car:      Set_Pwm( MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //å…¨å‘è½®å°è½¦
+				 case Akm_Car:       Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, Servo); break; //é˜¿å…‹æ›¼å°è½¦
+				 case Diff_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //ä¸¤è½®å·®é€Ÿå°è½¦
+				 case FourWheel_Car: Set_Pwm(-MOTOR_A.Motor_Pwm, -MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //å››é©±è½¦ 
+				 case Tank_Car:      Set_Pwm(-MOTOR_A.Motor_Pwm,  MOTOR_B.Motor_Pwm,  MOTOR_C.Motor_Pwm, MOTOR_D.Motor_Pwm, 0    ); break; //å±¥å¸¦è½¦
 			 }
 		 
 			 if(CheckCount>(CheckPeriod*(CheckPhrase2)-WaitPeriod))
@@ -530,102 +530,102 @@ int CheckTask(void)
 				 
 				 if(CheckCount==(CheckPeriod*(CheckPhrase2)-2))
 				 {
-					 //µ¥¶ÀÇı¶¯Ê±ÎŞ±àÂëÆ÷Êı¾İ£¬ÕûÌåÔË¶¯Ê±±àÂëÆ÷ÓĞÊı¾İ£¬ËµÃ÷Çı¶¯Ëğ»µ
+					 //å•ç‹¬é©±åŠ¨æ—¶æ— ç¼–ç å™¨æ•°æ®ï¼Œæ•´ä½“è¿åŠ¨æ—¶ç¼–ç å™¨æœ‰æ•°æ®ï¼Œè¯´æ˜é©±åŠ¨æŸå
 					 if((A&12)&&ZeroACount<30)ErrorCode=ErrorCode|1<<3; 
 					 if((B&12)&&ZeroBCount<30)ErrorCode=ErrorCode|1<<5;
 					 if((C&12)&&ZeroCCount<30)ErrorCode=ErrorCode|1<<7;
 					 if((D&12)&&ZeroDCount<30)ErrorCode=ErrorCode|1<<9;
 				 }
 				 
-				 //Çı¶¯¡¢±àÂëÆ÷²»Õı³£ÔòÈ·ÈÏµç»úÏß½Ó´í
+				 //é©±åŠ¨ã€ç¼–ç å™¨ä¸æ­£å¸¸åˆ™ç¡®è®¤ç”µæœºçº¿æ¥é”™
 				 if(gyro[2]>64000||gyro[2]<-64000)gyro[2]=501;
 				 if(Car_Mode==Mec_Car)
 				 {
 				   if((gyro[2]>500||gyro[2]<-500))   WireWrongCount++;
-					 if(WireWrongCount>80)             WireWrong=1;//ErrorCode=ErrorCode|1<<15; //µç»úÏß½Ó´í£¬´íÎó´úÂëÂ¼Èë
+					 if(WireWrongCount>80)             WireWrong=1;//ErrorCode=ErrorCode|1<<15; //ç”µæœºçº¿æ¥é”™ï¼Œé”™è¯¯ä»£ç å½•å…¥
 				 }
 				 else
 				 {
-					 if((gyro[2]<100))                 WireWrong=1;//ErrorCode=ErrorCode|1<<14; //µç»úÏß½Ó´í£¬´íÎó´úÂëÂ¼Èë
+					 if((gyro[2]<100))                 WireWrong=1;//ErrorCode=ErrorCode|1<<14; //ç”µæœºçº¿æ¥é”™ï¼Œé”™è¯¯ä»£ç å½•å…¥
 				 }			 
 			 }				 
 		 }
 		 
-		 //¼ì²âµç»úÏßÊÇ·ñ½Ó´í
+		 //æ£€æµ‹ç”µæœºçº¿æ˜¯å¦æ¥é”™
 
-		 //Í³¼Æ´íÎó´úÂë ĞèÒªÓÃ»§ÏÈÈ·ÈÏĞÍºÅÊÇ·ñÑ¡¶ÔÒÔ¼°±àÂëÆ÷ÊÇ·ñ½ÓÕıÈ·£¬¸Ã½Ì³Ì»¹ÔÚ×ö
+		 //ç»Ÿè®¡é”™è¯¯ä»£ç  éœ€è¦ç”¨æˆ·å…ˆç¡®è®¤å‹å·æ˜¯å¦é€‰å¯¹ä»¥åŠç¼–ç å™¨æ˜¯å¦æ¥æ­£ç¡®ï¼Œè¯¥æ•™ç¨‹è¿˜åœ¨åš
 		 else if(CheckCount==(1+CheckPeriod*(CheckPhrase2)))
 		 {			 		 
-			 if(MPU9250ErrorCount>100*CheckPhrase2/2)     ErrorCode=ErrorCode|1<<13; //MPU9250Ëğ»µ
-			 if(Temperature>7000)                         ErrorCode=ErrorCode|1<<12; //ÎÂ¶È¹ı¸ß
-			 if((MaxVoltage-MinVoltage)>5)                ErrorCode=ErrorCode|1<<11; //µçÑ¹²¨¶¯¹ı´ó£¬µçÔ´²»ÎÈ¶¨
-			 if(Voltage<10)                               ErrorCode=ErrorCode|1;     //µçÑ¹¹ıµÍ
-			 if(EN==0)                                    ErrorCode=ErrorCode|1<<1;  //¿ª¹Ø´¦ÓÚ¹Ø±Õ×´Ì¬£¬µçÔ´¿ª¹Ø/¼±Í£¿ª¹Ø
-			 if(A==16&&B==16)                             ErrorCode=ErrorCode|1<<2;  //Ğ¡³µĞÍºÅÑ¡´í£¬ÓÒÉÏ½ÇµçÎ»Æ÷µ÷ĞÍºÅ
+			 if(MPU9250ErrorCount>100*CheckPhrase2/2)     ErrorCode=ErrorCode|1<<13; //MPU9250æŸå
+			 if(Temperature>7000)                         ErrorCode=ErrorCode|1<<12; //æ¸©åº¦è¿‡é«˜
+			 if((MaxVoltage-MinVoltage)>5)                ErrorCode=ErrorCode|1<<11; //ç”µå‹æ³¢åŠ¨è¿‡å¤§ï¼Œç”µæºä¸ç¨³å®š
+			 if(Voltage<10)                               ErrorCode=ErrorCode|1;     //ç”µå‹è¿‡ä½
+			 if(EN==0)                                    ErrorCode=ErrorCode|1<<1;  //å¼€å…³å¤„äºå…³é—­çŠ¶æ€ï¼Œç”µæºå¼€å…³/æ€¥åœå¼€å…³
+			 if(A==16&&B==16)                             ErrorCode=ErrorCode|1<<2;  //å°è½¦å‹å·é€‰é”™ï¼Œå³ä¸Šè§’ç”µä½å™¨è°ƒå‹å·
 			 
 			 switch(A&0X0F)
 			 {
-				case 1:                 ErrorCode=ErrorCode|1<<3; break; //Çı¶¯Ëğ»µ   0001
-				case 2:                 ErrorCode=ErrorCode|1<<3; break; //Çı¶¯Ëğ»µ   0010
-				case 3:                 ErrorCode=ErrorCode|1<<4; break; //Çı¶¯Ïß·´½Ó 0011											
+				case 1:                 ErrorCode=ErrorCode|1<<3; break; //é©±åŠ¨æŸå   0001
+				case 2:                 ErrorCode=ErrorCode|1<<3; break; //é©±åŠ¨æŸå   0010
+				case 3:                 ErrorCode=ErrorCode|1<<4; break; //é©±åŠ¨çº¿åæ¥ 0011											
 				default:                                          break;
 			 }
 			 switch(B&0X0F)
 			 {
-				case 1:                 ErrorCode=ErrorCode|1<<5; break; //Çı¶¯Ëğ»µ   0001
-				case 2:                 ErrorCode=ErrorCode|1<<5; break; //Çı¶¯Ëğ»µ   0010
-				case 3:                 ErrorCode=ErrorCode|1<<6; break; //Çı¶¯Ïß·´½Ó 0011											
+				case 1:                 ErrorCode=ErrorCode|1<<5; break; //é©±åŠ¨æŸå   0001
+				case 2:                 ErrorCode=ErrorCode|1<<5; break; //é©±åŠ¨æŸå   0010
+				case 3:                 ErrorCode=ErrorCode|1<<6; break; //é©±åŠ¨çº¿åæ¥ 0011											
 				default:                                          break;
 			 }
 			 switch(C&0X0F)
 			 {
-				case 1:                 ErrorCode=ErrorCode|1<<7; break; //Çı¶¯Ëğ»µ   0001
-				case 2:                 ErrorCode=ErrorCode|1<<7; break; //Çı¶¯Ëğ»µ   0010
-				case 3:                 ErrorCode=ErrorCode|1<<8; break; //Çı¶¯Ïß·´½Ó 0011											
+				case 1:                 ErrorCode=ErrorCode|1<<7; break; //é©±åŠ¨æŸå   0001
+				case 2:                 ErrorCode=ErrorCode|1<<7; break; //é©±åŠ¨æŸå   0010
+				case 3:                 ErrorCode=ErrorCode|1<<8; break; //é©±åŠ¨çº¿åæ¥ 0011											
 				default:                                          break;
 			 }
 			 switch(D&0X0F)
 			 {
-				case 1:                 ErrorCode=ErrorCode|1<<9; break; //Çı¶¯Ëğ»µ   0001
-				case 2:                 ErrorCode=ErrorCode|1<<9; break; //Çı¶¯Ëğ»µ   0010
-				case 3:                 ErrorCode=ErrorCode|1<<10;break; //Çı¶¯Ïß·´½Ó 0011											
+				case 1:                 ErrorCode=ErrorCode|1<<9; break; //é©±åŠ¨æŸå   0001
+				case 2:                 ErrorCode=ErrorCode|1<<9; break; //é©±åŠ¨æŸå   0010
+				case 3:                 ErrorCode=ErrorCode|1<<10;break; //é©±åŠ¨çº¿åæ¥ 0011											
 				default:                                          break;
 			 }
 			 
-			 //ËÄÇı³µÇı¶¯µ¥¸öÂÖ×Ó£¬ÎŞ·¨Ê¹³µ×ÓÒÆ¶¯£¬µ¼ÖÂÍÓÂİÒÇÎŞÊı¾İ
-			 if(MPU9250SensorCountA>=80){if(EncoderA_Count>80)                          ErrorCode=ErrorCode|1<<3; } //Çı¶¯AËğ»µ
-			 else                       {if(EncoderA_Count>80&&(!(ErrorCode&1<<3)))     ErrorCode=ErrorCode|1<<16;} //±àÂëÆ÷AËğ»µ 
-			 if(MPU9250SensorCountB>=80){if(EncoderB_Count>80)                          ErrorCode=ErrorCode|1<<5; } //Çı¶¯BËğ»µ
-			 else                       {if(EncoderB_Count>80&&(!(ErrorCode&1<<5)))     ErrorCode=ErrorCode|1<<17;} //±àÂëÆ÷BËğ»µ 
-			 if(MPU9250SensorCountC>=80){if(EncoderC_Count>80)                          ErrorCode=ErrorCode|1<<7; } //Çı¶¯CËğ»µ
-			 else                       {if(EncoderC_Count>80&&(!(ErrorCode&1<<7)))     ErrorCode=ErrorCode|1<<18;} //±àÂëÆ÷CËğ»µ 
-			 if(MPU9250SensorCountD>=90){if(EncoderD_Count>80)                          ErrorCode=ErrorCode|1<<9; } //Çı¶¯DËğ»µ
-			 else                       {if(EncoderD_Count>80&&(!(ErrorCode&1<<9)))     ErrorCode=ErrorCode|1<<19;} //±àÂëÆ÷DËğ»µ ÂóÂÖDµç»ú½á¹¹ÉÏ¿ÉÄÜ´ø¶¯Ğ¡³µ×ª¶¯µÄÄÜÁ¦Èõ£¬¼ì²â¿íÈİ´¦Àí	
+			 //å››é©±è½¦é©±åŠ¨å•ä¸ªè½®å­ï¼Œæ— æ³•ä½¿è½¦å­ç§»åŠ¨ï¼Œå¯¼è‡´é™€èºä»ªæ— æ•°æ®
+			 if(MPU9250SensorCountA>=80){if(EncoderA_Count>80)                          ErrorCode=ErrorCode|1<<3; } //é©±åŠ¨AæŸå
+			 else                       {if(EncoderA_Count>80&&(!(ErrorCode&1<<3)))     ErrorCode=ErrorCode|1<<16;} //ç¼–ç å™¨AæŸå 
+			 if(MPU9250SensorCountB>=80){if(EncoderB_Count>80)                          ErrorCode=ErrorCode|1<<5; } //é©±åŠ¨BæŸå
+			 else                       {if(EncoderB_Count>80&&(!(ErrorCode&1<<5)))     ErrorCode=ErrorCode|1<<17;} //ç¼–ç å™¨BæŸå 
+			 if(MPU9250SensorCountC>=80){if(EncoderC_Count>80)                          ErrorCode=ErrorCode|1<<7; } //é©±åŠ¨CæŸå
+			 else                       {if(EncoderC_Count>80&&(!(ErrorCode&1<<7)))     ErrorCode=ErrorCode|1<<18;} //ç¼–ç å™¨CæŸå 
+			 if(MPU9250SensorCountD>=90){if(EncoderD_Count>80)                          ErrorCode=ErrorCode|1<<9; } //é©±åŠ¨DæŸå
+			 else                       {if(EncoderD_Count>80&&(!(ErrorCode&1<<9)))     ErrorCode=ErrorCode|1<<19;} //ç¼–ç å™¨DæŸå éº¦è½®Dç”µæœºç»“æ„ä¸Šå¯èƒ½å¸¦åŠ¨å°è½¦è½¬åŠ¨çš„èƒ½åŠ›å¼±ï¼Œæ£€æµ‹å®½å®¹å¤„ç†	
 			 //                          0B 1111 0000 0111 1111 1000
 			 if(WireWrong==1&&(ErrorCode&0xf07f8)==0)ErrorCode=ErrorCode|1<<14;
 			 OLED_Clear();
 			 Checked=1;
 	   }
-		 //Í³¼Æ´íÎó´úÂë
+		 //ç»Ÿè®¡é”™è¯¯ä»£ç 
 			
-		 //¼ì²âÍê³É£¬µç»úÖÃ0
+		 //æ£€æµ‹å®Œæˆï¼Œç”µæœºç½®0
 		 if(CheckCount>=(1+CheckPeriod*(CheckPhrase2)))
 		 {
 		  Set_Pwm(0,0,0,0,1500);
 		  MOTOR_A.Target=0,   MOTOR_B.Target=0,   MOTOR_C.Target=0,   MOTOR_D.Target=0;
 		  MOTOR_A.Motor_Pwm=0,MOTOR_B.Motor_Pwm=0,MOTOR_C.Motor_Pwm=0,MOTOR_D.Motor_Pwm=0;
-		  MOTOR_A.Motor_Pwm=Incremental_PI_A(MOTOR_A.Encoder, MOTOR_A.Target);   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úA×îÖÕPWM
-		  MOTOR_B.Motor_Pwm=Incremental_PI_B(MOTOR_B.Encoder, MOTOR_B.Target);   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úB×îÖÕPWM
-		  MOTOR_C.Motor_Pwm=Incremental_PI_C(MOTOR_C.Encoder, MOTOR_C.Target);   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úC×îÖÕPWM
-		  MOTOR_D.Motor_Pwm=Incremental_PI_D(MOTOR_D.Encoder, MOTOR_D.Target);   //===ËÙ¶È±Õ»·¿ØÖÆ¼ÆËãµç»úD×îÖÕPWM		
+		  MOTOR_A.Motor_Pwm=Incremental_PI_A(MOTOR_A.Encoder, MOTOR_A.Target);   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºAæœ€ç»ˆPWM
+		  MOTOR_B.Motor_Pwm=Incremental_PI_B(MOTOR_B.Encoder, MOTOR_B.Target);   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºBæœ€ç»ˆPWM
+		  MOTOR_C.Motor_Pwm=Incremental_PI_C(MOTOR_C.Encoder, MOTOR_C.Target);   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºCæœ€ç»ˆPWM
+		  MOTOR_D.Motor_Pwm=Incremental_PI_D(MOTOR_D.Encoder, MOTOR_D.Target);   //===é€Ÿåº¦é—­ç¯æ§åˆ¶è®¡ç®—ç”µæœºDæœ€ç»ˆPWM		
 		 }
 	 }
 	 return 0;
 }
 /**************************************************************************
-º¯Êı¹¦ÄÜ£º¸³Öµ¸øPWM¼Ä´æÆ÷
-Èë¿Ú²ÎÊı£ºPWM
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šèµ‹å€¼ç»™PWMå¯„å­˜å™¨
+å…¥å£å‚æ•°ï¼šPWM
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void Set_Pwm(int motor_a,int motor_b,int motor_c,int motor_d,int servo)
 {
@@ -653,9 +653,9 @@ void Set_Pwm(int motor_a,int motor_b,int motor_c,int motor_d,int servo)
 }
 
 /**************************************************************************
-º¯Êı¹¦ÄÜ£ºÏŞÖÆPWM¸³Öµ 
-Èë¿Ú²ÎÊı£º·ùÖµ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šé™åˆ¶PWMèµ‹å€¼ 
+å…¥å£å‚æ•°ï¼šå¹…å€¼
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void Limit_Pwm(int amplitude)
 {	
@@ -665,9 +665,9 @@ void Limit_Pwm(int amplitude)
 	    MOTOR_D.Motor_Pwm=target_limit_float(MOTOR_D.Motor_Pwm,-amplitude,amplitude);
 }	    
 /**************************************************************************
-º¯Êı¹¦ÄÜ£ºÏŞ·ùº¯Êı£¬Éè¶¨¸ßµÍãĞÖµ
-Èë¿Ú²ÎÊı£º·ùÖµ
-·µ»Ø  Öµ£º
+å‡½æ•°åŠŸèƒ½ï¼šé™å¹…å‡½æ•°ï¼Œè®¾å®šé«˜ä½é˜ˆå€¼
+å…¥å£å‚æ•°ï¼šå¹…å€¼
+è¿”å›  å€¼ï¼š
 **************************************************************************/
 float target_limit_float(float insert,float low,float high)
 {
@@ -688,14 +688,14 @@ int target_limit_int(int insert,int low,int high)
         return insert;	
 }
 /**************************************************************************
-º¯Êı¹¦ÄÜ£ºÒì³£¹Ø±Õµç»ú
-Èë¿Ú²ÎÊı£ºµçÑ¹
-·µ»Ø  Öµ£º1£ºÒì³£  0£ºÕı³£
+å‡½æ•°åŠŸèƒ½ï¼šå¼‚å¸¸å…³é—­ç”µæœº
+å…¥å£å‚æ•°ï¼šç”µå‹
+è¿”å›  å€¼ï¼š1ï¼šå¼‚å¸¸  0ï¼šæ­£å¸¸
 **************************************************************************/
 u8 Turn_Off( int voltage)
 {
 	    u8 temp;
-			if(voltage<10||EN==0||Flag_Stop==1)//µç³ØµçÑ¹¹ıµÍ¹Ø±Õµç»ú
+			if(voltage<10||EN==0||Flag_Stop==1)//ç”µæ± ç”µå‹è¿‡ä½å…³é—­ç”µæœº
 			{	                                                
 				temp=1;      
 				PWMA=0;
@@ -708,9 +708,9 @@ u8 Turn_Off( int voltage)
 			return temp;			
 }
 /**************************************************************************
-º¯Êı¹¦ÄÜ£º¾ø¶ÔÖµº¯Êı
-Èë¿Ú²ÎÊı£ºlong int
-·µ»Ø  Öµ£ºunsigned int
+å‡½æ•°åŠŸèƒ½ï¼šç»å¯¹å€¼å‡½æ•°
+å…¥å£å‚æ•°ï¼šlong int
+è¿”å›  å€¼ï¼šunsigned int
 **************************************************************************/
 u32 myabs(long int a)
 { 		   
@@ -720,61 +720,61 @@ u32 myabs(long int a)
 	  return temp;
 }
 /**************************************************************************
-º¯Êı¹¦ÄÜ£ºÔöÁ¿PI¿ØÖÆÆ÷
-Èë¿Ú²ÎÊı£º±àÂëÆ÷²âÁ¿Öµ£¬Ä¿±êËÙ¶È
-·µ»Ø  Öµ£ºµç»úPWM
-¸ù¾İÔöÁ¿Ê½ÀëÉ¢PID¹«Ê½ 
-pwm+=Kp[e£¨k£©-e(k-1)]+Ki*e(k)+Kd[e(k)-2e(k-1)+e(k-2)]
-e(k)´ú±í±¾´ÎÆ«²î 
-e(k-1)´ú±íÉÏÒ»´ÎµÄÆ«²î  ÒÔ´ËÀàÍÆ 
-pwm´ú±íÔöÁ¿Êä³ö
-ÔÚÎÒÃÇµÄËÙ¶È¿ØÖÆ±Õ»·ÏµÍ³ÀïÃæ£¬Ö»Ê¹ÓÃPI¿ØÖÆ
-pwm+=Kp[e£¨k£©-e(k-1)]+Ki*e(k)
+å‡½æ•°åŠŸèƒ½ï¼šå¢é‡PIæ§åˆ¶å™¨
+å…¥å£å‚æ•°ï¼šç¼–ç å™¨æµ‹é‡å€¼ï¼Œç›®æ ‡é€Ÿåº¦
+è¿”å›  å€¼ï¼šç”µæœºPWM
+æ ¹æ®å¢é‡å¼ç¦»æ•£PIDå…¬å¼ 
+pwm+=Kp[eï¼ˆkï¼‰-e(k-1)]+Ki*e(k)+Kd[e(k)-2e(k-1)+e(k-2)]
+e(k)ä»£è¡¨æœ¬æ¬¡åå·® 
+e(k-1)ä»£è¡¨ä¸Šä¸€æ¬¡çš„åå·®  ä»¥æ­¤ç±»æ¨ 
+pwmä»£è¡¨å¢é‡è¾“å‡º
+åœ¨æˆ‘ä»¬çš„é€Ÿåº¦æ§åˆ¶é—­ç¯ç³»ç»Ÿé‡Œé¢ï¼Œåªä½¿ç”¨PIæ§åˆ¶
+pwm+=Kp[eï¼ˆkï¼‰-e(k-1)]+Ki*e(k)
 **************************************************************************/
 int Incremental_PI_A (float Encoder,float Target)
-{ 	//ÔöÁ¿Ê½PI¿ØÖÆÆ÷
+{ 	//å¢é‡å¼PIæ§åˆ¶å™¨
 	 static float Bias,Pwm,Last_bias;
-	 Bias=Target-Encoder;                //¼ÆËãÆ«²î
+	 Bias=Target-Encoder;                //è®¡ç®—åå·®
 	 Pwm+=Velocity_KP*(Bias-Last_bias)+Velocity_KI*Bias;   // /
 	 if(Pwm>7200)Pwm=7200;
 	 if(Pwm<-7200)Pwm=-7200;
-	 Last_bias=Bias;//±£´æÉÏÒ»´ÎÆ«²î 
-	 return Pwm;  //ÔöÁ¿Êä³ö
+	 Last_bias=Bias;//ä¿å­˜ä¸Šä¸€æ¬¡åå·® 
+	 return Pwm;  //å¢é‡è¾“å‡º
 }
 int Incremental_PI_B (float Encoder,float Target)
-{  //ÔöÁ¿Ê½PI¿ØÖÆÆ÷
+{  //å¢é‡å¼PIæ§åˆ¶å™¨
 	 static float Bias,Pwm,Last_bias;
-	 Bias=Target-Encoder;                //¼ÆËãÆ«²î
+	 Bias=Target-Encoder;                //è®¡ç®—åå·®
 	 Pwm+=Velocity_KP*(Bias-Last_bias)+Velocity_KI*Bias;   //
 	 if(Pwm>7200)Pwm=7200;
 	 if(Pwm<-7200)Pwm=-7200;
-	 Last_bias=Bias; //±£´æÉÏÒ»´ÎÆ«²î 
-	 return Pwm; //ÔöÁ¿Êä³ö
+	 Last_bias=Bias; //ä¿å­˜ä¸Šä¸€æ¬¡åå·® 
+	 return Pwm; //å¢é‡è¾“å‡º
 }
 int Incremental_PI_C (float Encoder,float Target)
-{  //ÔöÁ¿Ê½PI¿ØÖÆÆ÷
+{  //å¢é‡å¼PIæ§åˆ¶å™¨
 	 static float Bias,Pwm,Last_bias;
-	 Bias=Target-Encoder;                //¼ÆËãÆ«²î
+	 Bias=Target-Encoder;                //è®¡ç®—åå·®
 	 Pwm+=Velocity_KP*(Bias-Last_bias)+Velocity_KI*Bias;   //
 	 if(Pwm>7200)Pwm=7200;
 	 if(Pwm<-7200)Pwm=-7200;
-	 Last_bias=Bias; //±£´æÉÏÒ»´ÎÆ«²î 
-	 return Pwm; //ÔöÁ¿Êä³ö
+	 Last_bias=Bias; //ä¿å­˜ä¸Šä¸€æ¬¡åå·® 
+	 return Pwm; //å¢é‡è¾“å‡º
 }
 int Incremental_PI_D (float Encoder,float Target)
-{  //ÔöÁ¿Ê½PI¿ØÖÆÆ÷
+{  //å¢é‡å¼PIæ§åˆ¶å™¨
 	 static float Bias,Pwm,Last_bias;
-	 Bias=Target-Encoder;                //¼ÆËãÆ«²î
+	 Bias=Target-Encoder;                //è®¡ç®—åå·®
 	 Pwm+=Velocity_KP*(Bias-Last_bias)+Velocity_KI*Bias;   //
 	 if(Pwm>7200)Pwm=7200;
 	 if(Pwm<-7200)Pwm=-7200;
-	 Last_bias=Bias; //±£´æÉÏÒ»´ÎÆ«²î 
-	 return Pwm; //ÔöÁ¿Êä³ö
+	 Last_bias=Bias; //ä¿å­˜ä¸Šä¸€æ¬¡åå·® 
+	 return Pwm; //å¢é‡è¾“å‡º
 }
 /**************************************************************************
-º¯Êı¹¦ÄÜ£ºÍ¨¹ı´®¿ÚÖ¸Áî¶Ô»úÆ÷ÈË½øĞĞÒ£¿Ø
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šé€šè¿‡ä¸²å£æŒ‡ä»¤å¯¹æœºå™¨äººè¿›è¡Œé¥æ§
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void Get_RC(void)
 {
@@ -782,7 +782,7 @@ void Get_RC(void)
 //	float TurnParam;
 	if(Car_Mode==Mec_Car||Car_Mode==Omni_Car)
 	{
-	 switch(Flag_Direction)   //·½Ïò¿ØÖÆ
+	 switch(Flag_Direction)   //æ–¹å‘æ§åˆ¶
 	 { 
 			case 1:      Move_X=RC_Velocity;  	 Move_Y=0;             Flag_Move=1;    break;
 			case 2:      Move_X=RC_Velocity;  	 Move_Y=-RC_Velocity;  Flag_Move=1; 	 break;
@@ -794,16 +794,16 @@ void Get_RC(void)
 			case 8:      Move_X=RC_Velocity; 	 Move_Y=RC_Velocity;   Flag_Move=1;    break; 
 			default:     Move_X=0;               Move_Y=0;             Flag_Move=0;    break;
 	 }
-	 if(Flag_Move==0)		//Èç¹ûÎŞ·½Ïò¿ØÖÆÖ¸Áî	 £¬¼ì²é×ªÏò¿ØÖÆ×´Ì¬
+	 if(Flag_Move==0)		//å¦‚æœæ— æ–¹å‘æ§åˆ¶æŒ‡ä»¤	 ï¼Œæ£€æŸ¥è½¬å‘æ§åˆ¶çŠ¶æ€
 	 {	
-				if     (Flag_Left ==1)  Move_Z= PI/4*(RC_Velocity/400); //×ó×ÔĞı   
-				else if(Flag_Right==1)  Move_Z=-PI/4*(RC_Velocity/400); //ÓÒ×ÔĞı		
-				else 		                Move_Z=0;                       //Í£Ö¹
+				if     (Flag_Left ==1)  Move_Z= PI/4*(RC_Velocity/400); //å·¦è‡ªæ—‹   
+				else if(Flag_Right==1)  Move_Z=-PI/4*(RC_Velocity/400); //å³è‡ªæ—‹		
+				else 		                Move_Z=0;                       //åœæ­¢
 	 }
 	}	
 	else
 	{
-	 switch(Flag_Direction)   //·½Ïò¿ØÖÆ
+	 switch(Flag_Direction)   //æ–¹å‘æ§åˆ¶
 	 { 
 			case 1:      Move_X=+RC_Velocity;  	 Move_Z=0;         break;
 			case 2:      Move_X=+RC_Velocity;  	 Move_Z=-PI/4;   	 break;
@@ -815,12 +815,12 @@ void Get_RC(void)
 			case 8:      Move_X=+RC_Velocity; 	 Move_Z=+PI/4;     break; 
 			default:     Move_X=0;               Move_Z=0;         break;
 	 }
-	 if     (Flag_Left ==1)  Move_Z= PI/4; //×ó×ÔĞı   
-	 else if(Flag_Right==1)  Move_Z=-PI/4; //ÓÒ×ÔĞı		
+	 if     (Flag_Left ==1)  Move_Z= PI/4; //å·¦è‡ªæ—‹   
+	 else if(Flag_Right==1)  Move_Z=-PI/4; //å³è‡ªæ—‹		
 
 	}
 	
-	//ZÖáÊı¾İ×ª»¯
+	//Zè½´æ•°æ®è½¬åŒ–
 	if(Car_Mode==Akm_Car)
 	{
 		Move_Z=Move_Z*4/9;
@@ -839,14 +839,14 @@ void Get_RC(void)
 //	}
 		
 	Move_X=Move_X/1000;       Move_Y=Move_Y/1000;         Move_Z=Move_Z;
-	Drive_Motor(Move_X,Move_Y,Move_Z);//µÃµ½¿ØÖÆÄ¿±êÖµ£¬½øĞĞÔË¶¯Ñ§·ÖÎö
+	Drive_Motor(Move_X,Move_Y,Move_Z);//å¾—åˆ°æ§åˆ¶ç›®æ ‡å€¼ï¼Œè¿›è¡Œè¿åŠ¨å­¦åˆ†æ
 
 }
 
 /**************************************************************************
-º¯Êı¹¦ÄÜ£ºÍ¨¹ıPS2ÓĞÏßÊÖ±ú¶Ô»úÆ÷ÈË½øĞĞÒ£¿Ø
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šé€šè¿‡PS2æœ‰çº¿æ‰‹æŸ„å¯¹æœºå™¨äººè¿›è¡Œé¥æ§
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void PS2_control(void)
 {
@@ -854,25 +854,25 @@ void PS2_control(void)
    	int LX,LY,RY;
 		int Yuzhi=20;
 			
-		LY=-(PS2_LX-128); //»ñÈ¡Æ«²î PS2×ø±êÏµÎª YÇ°ºó X×óÓÒ
-		LX=-(PS2_LY-128); //»ñÈ¡Æ«²î
-		RY=-(PS2_RX-128); //»ñÈ¡Æ«²î
-		if(LX>-Yuzhi&&LX<Yuzhi)LX=0; //ÉèÖÃĞ¡½Ç¶ÈµÄËÀÇø
-		if(LY>-Yuzhi&&LY<Yuzhi)LY=0; //ÉèÖÃĞ¡½Ç¶ÈµÄËÀÇø
-		if(RY>-Yuzhi&&RY<Yuzhi)RY=0; //ÉèÖÃĞ¡½Ç¶ÈµÄËÀÇø
+		LY=-(PS2_LX-128); //è·å–åå·® PS2åæ ‡ç³»ä¸º Yå‰å Xå·¦å³
+		LX=-(PS2_LY-128); //è·å–åå·®
+		RY=-(PS2_RX-128); //è·å–åå·®
+		if(LX>-Yuzhi&&LX<Yuzhi)LX=0; //è®¾ç½®å°è§’åº¦çš„æ­»åŒº
+		if(LY>-Yuzhi&&LY<Yuzhi)LY=0; //è®¾ç½®å°è§’åº¦çš„æ­»åŒº
+		if(RY>-Yuzhi&&RY<Yuzhi)RY=0; //è®¾ç½®å°è§’åº¦çš„æ­»åŒº
 		if(LX==0) Move_X=Move_X/1.2;
 		if(RY==0) Move_Z=Move_Z/1.2;
 	
-	  if (PS2_KEY==11)		RC_Velocity+=5;  //ËÙ¶È¿ØÖÆ ¼ÓËÙ
-	  else if(PS2_KEY==9)	RC_Velocity-=5;  //ËÙ¶È¿ØÖÆ ¼õËÙ	
+	  if (PS2_KEY==11)		RC_Velocity+=5;  //é€Ÿåº¦æ§åˆ¶ åŠ é€Ÿ
+	  else if(PS2_KEY==9)	RC_Velocity-=5;  //é€Ÿåº¦æ§åˆ¶ å‡é€Ÿ	
 	
 		if(RC_Velocity<0)   RC_Velocity=0;
 	
-		Move_X=LX*RC_Velocity/128; //Ç°½øÁ¿µ¥Î»mm/s
-		Move_Y=LY*RC_Velocity/128; //Ç°½øÁ¿µ¥Î»mm/s
-	  Move_Z=RY*(PI/4)/128;      //×ªÏòÁ¿
+		Move_X=LX*RC_Velocity/128; //å‰è¿›é‡å•ä½mm/s
+		Move_Y=LY*RC_Velocity/128; //å‰è¿›é‡å•ä½mm/s
+	  Move_Z=RY*(PI/4)/128;      //è½¬å‘é‡
 	
-	  //ZÖáÊı¾İ×ª»¯
+	  //Zè½´æ•°æ®è½¬åŒ–
 	  if(Car_Mode==Mec_Car||Car_Mode==Omni_Car)
 		{
 			Move_Z=Move_Z*RC_Velocity/400;
@@ -894,17 +894,17 @@ void PS2_control(void)
 //			Move_Z=Move_Z*TurnParam;
 //		}
 		 
-		Move_X=Move_X/1000;        //µ¥Î»×ª»» mm/s->m/ss
-		Move_Y=Move_Y/1000;        //µ¥Î»×ª»» mm/s->m/ss
+		Move_X=Move_X/1000;        //å•ä½è½¬æ¢ mm/s->m/ss
+		Move_Y=Move_Y/1000;        //å•ä½è½¬æ¢ mm/s->m/ss
 		Move_Z=Move_Z;
 		
-		Drive_Motor(Move_X,Move_Y,Move_Z);//µÃµ½¿ØÖÆÄ¿±êÖµ£¬½øĞĞÔË¶¯Ñ§·ÖÎö			 			
+		Drive_Motor(Move_X,Move_Y,Move_Z);//å¾—åˆ°æ§åˆ¶ç›®æ ‡å€¼ï¼Œè¿›è¡Œè¿åŠ¨å­¦åˆ†æ			 			
 } 
 
 /**************************************************************************
-º¯Êı¹¦ÄÜ£ºÍ¨¹ıº½Ä£Ò£¿Ø¶Ô»úÆ÷ÈË½øĞĞÒ£¿Ø
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šé€šè¿‡èˆªæ¨¡é¥æ§å¯¹æœºå™¨äººè¿›è¡Œé¥æ§
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void Remote_Control(void)
 {
@@ -922,7 +922,7 @@ void Remote_Control(void)
     LX=Remoter_Ch2-1500;
     LY=Remoter_Ch4-1500;
 	RX=Remoter_Ch3-1500;
-    RY=Remoter_Ch1-1500;//×Ô×ª
+    RY=Remoter_Ch1-1500;//è‡ªè½¬
 
     if(LX>-Yuzhi&&LX<Yuzhi)LX=0;
     if(LY>-Yuzhi&&LY<Yuzhi)LY=0;
@@ -936,11 +936,11 @@ void Remote_Control(void)
 		
 		Remote_RCvelocity=RC_Velocity+RX;
 		
-    Move_X= LX*Remote_RCvelocity/500; //Ç°½øÁ¿µ¥Î»mm/s
+    Move_X= LX*Remote_RCvelocity/500; //å‰è¿›é‡å•ä½mm/s
 		Move_Y=-LY*Remote_RCvelocity/500;
-		Move_Z=-RY*(PI/4)/500;      //×ªÏòÁ¿
+		Move_Z=-RY*(PI/4)/500;      //è½¬å‘é‡
 			 
-		//ZÖáÊı¾İ×ª»¯
+		//Zè½´æ•°æ®è½¬åŒ–
 	  if(Car_Mode==Mec_Car||Car_Mode==Omni_Car)
 		{
 			Move_Z=Move_Z*Remote_RCvelocity/400;
@@ -962,57 +962,57 @@ void Remote_Control(void)
 //			Move_Z=Move_Z*TurnParam;
 //		}
 		
-		Move_X=Move_X/1000;        //µ¥Î»×ª»» mm/s->m/ss
-    Move_Y=Move_Y/1000;        //µ¥Î»×ª»» mm/s->m/ss
+		Move_X=Move_X/1000;        //å•ä½è½¬æ¢ mm/s->m/ss
+    Move_Y=Move_Y/1000;        //å•ä½è½¬æ¢ mm/s->m/ss
 		Move_Z=Move_Z;
 		
-    if(thrice>0) Move_X=0,Move_Z=0,thrice--;//ÓÃÓÚÆÁ±Îº½Ä£Ò£¿Ø¸ÕÁ¬½ÓÉÏµÄÊ±ºòµÄ¸ÉÈÅĞÅÏ¢
+    if(thrice>0) Move_X=0,Move_Z=0,thrice--;//ç”¨äºå±è”½èˆªæ¨¡é¥æ§åˆšè¿æ¥ä¸Šçš„æ—¶å€™çš„å¹²æ‰°ä¿¡æ¯
 				
 		Drive_Motor(Move_X,Move_Y,Move_Z);
 }
 /**************************************************************************
-º¯Êı¹¦ÄÜ£º°´¼ü¼´Ê±¸üĞÂÍÓÂİÒÇÁãµã
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šæŒ‰é”®å³æ—¶æ›´æ–°é™€èºä»ªé›¶ç‚¹
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void Key(void)
 {	
 	u8 tmp;
 	tmp=click_N_Double_MPU6050(50); 
-	if(tmp==2)memcpy(Deviation_gyro,Original_gyro,sizeof(gyro));//Ë«»÷¸üĞÂÍÓÂİÒÇÁãµã
+	if(tmp==2)memcpy(Deviation_gyro,Original_gyro,sizeof(gyro));//åŒå‡»æ›´æ–°é™€èºä»ªé›¶ç‚¹
 }
 /**************************************************************************
-º¯Êı¹¦ÄÜ£º¶ÁÈ¡Ä£Ê½²¢²É¼¯±àÂëÆ÷
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šè¯»å–æ¨¡å¼å¹¶é‡‡é›†ç¼–ç å™¨
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void Get_Velocity_Form_Encoder(void)
 {
-		float Encoder_A_pr,Encoder_B_pr,Encoder_C_pr,Encoder_D_pr; //ÓÃÓÚ»ñÈ¡±àÂëÆ÷µÄÔ­Ê¼Êı¾İ
+		float Encoder_A_pr,Encoder_B_pr,Encoder_C_pr,Encoder_D_pr; //ç”¨äºè·å–ç¼–ç å™¨çš„åŸå§‹æ•°æ®
 		OriginalEncoder.A=Read_Encoder(2);	
 		OriginalEncoder.B=Read_Encoder(3);	
 		OriginalEncoder.C=Read_Encoder(4);	
 		OriginalEncoder.D=Read_Encoder(5);	
 
-		//ÕâÀï²É¼¯»ØÀ´µÄÊÇ±àÂëÆ÷µÄÔ­Ê¼Êı¾İ£¬ĞèÒª¾­¹ı×ª»»ºó²Å¿ÉÒÔÊ¹ÓÃ
+		//è¿™é‡Œé‡‡é›†å›æ¥çš„æ˜¯ç¼–ç å™¨çš„åŸå§‹æ•°æ®ï¼Œéœ€è¦ç»è¿‡è½¬æ¢åæ‰å¯ä»¥ä½¿ç”¨
 		switch(Car_Mode)
 		{
-			case Mec_Car:       Encoder_A_pr=-OriginalEncoder.A; Encoder_B_pr=-OriginalEncoder.B; Encoder_C_pr= OriginalEncoder.C;  Encoder_D_pr= OriginalEncoder.D; break; //Âó¿ËÄÉÄ·ÂÖĞ¡³µ
-			case Omni_Car:      Encoder_A_pr= OriginalEncoder.A; Encoder_B_pr= OriginalEncoder.B; Encoder_C_pr= OriginalEncoder.C;  Encoder_D_pr= OriginalEncoder.D; break; //È«ÏòÂÖĞ¡³µ
-			case Akm_Car:       Encoder_A_pr=-OriginalEncoder.A; Encoder_B_pr= OriginalEncoder.B; Encoder_C_pr= OriginalEncoder.C;  Encoder_D_pr= OriginalEncoder.D; break; //°¢¿ËÂüĞ¡³µ
-			case Diff_Car:      Encoder_A_pr=-OriginalEncoder.A; Encoder_B_pr= OriginalEncoder.B; Encoder_C_pr= OriginalEncoder.C;  Encoder_D_pr= OriginalEncoder.D; break; //Á½ÂÖ²îËÙĞ¡³µ
-			case FourWheel_Car: Encoder_A_pr=-OriginalEncoder.A; Encoder_B_pr=-OriginalEncoder.B; Encoder_C_pr= OriginalEncoder.C;  Encoder_D_pr= OriginalEncoder.D; break; //ËÄÇı³µ 
-			case Tank_Car:      Encoder_A_pr=-OriginalEncoder.A; Encoder_B_pr= OriginalEncoder.B; Encoder_C_pr= OriginalEncoder.C;  Encoder_D_pr= OriginalEncoder.D; break; //ÂÄ´ø³µ
+			case Mec_Car:       Encoder_A_pr=-OriginalEncoder.A; Encoder_B_pr=-OriginalEncoder.B; Encoder_C_pr= OriginalEncoder.C;  Encoder_D_pr= OriginalEncoder.D; break; //éº¦å…‹çº³å§†è½®å°è½¦
+			case Omni_Car:      Encoder_A_pr= OriginalEncoder.A; Encoder_B_pr= OriginalEncoder.B; Encoder_C_pr= OriginalEncoder.C;  Encoder_D_pr= OriginalEncoder.D; break; //å…¨å‘è½®å°è½¦
+			case Akm_Car:       Encoder_A_pr=-OriginalEncoder.A; Encoder_B_pr= OriginalEncoder.B; Encoder_C_pr= OriginalEncoder.C;  Encoder_D_pr= OriginalEncoder.D; break; //é˜¿å…‹æ›¼å°è½¦
+			case Diff_Car:      Encoder_A_pr=-OriginalEncoder.A; Encoder_B_pr= OriginalEncoder.B; Encoder_C_pr= OriginalEncoder.C;  Encoder_D_pr= OriginalEncoder.D; break; //ä¸¤è½®å·®é€Ÿå°è½¦
+			case FourWheel_Car: Encoder_A_pr=-OriginalEncoder.A; Encoder_B_pr=-OriginalEncoder.B; Encoder_C_pr= OriginalEncoder.C;  Encoder_D_pr= OriginalEncoder.D; break; //å››é©±è½¦ 
+			case Tank_Car:      Encoder_A_pr=-OriginalEncoder.A; Encoder_B_pr= OriginalEncoder.B; Encoder_C_pr= OriginalEncoder.C;  Encoder_D_pr= OriginalEncoder.D; break; //å±¥å¸¦è½¦
 		}
-		MOTOR_A.Encoder= Encoder_A_pr*CONTROL_FREQUENCY*Wheel_perimeter/Encoder_precision;  //±àÂëÆ÷µÄÊı¾İ×ª»»
-		MOTOR_B.Encoder= Encoder_B_pr*CONTROL_FREQUENCY*Wheel_perimeter/Encoder_precision; //±àÂëÆ÷µÄÊı¾İ×ª»»
-		MOTOR_C.Encoder= Encoder_C_pr*CONTROL_FREQUENCY*Wheel_perimeter/Encoder_precision;  //±àÂëÆ÷µÄÊı¾İ×ª»»
-		MOTOR_D.Encoder= Encoder_D_pr*CONTROL_FREQUENCY*Wheel_perimeter/Encoder_precision; //±àÂëÆ÷µÄÊı¾İ×ª»»
+		MOTOR_A.Encoder= Encoder_A_pr*CONTROL_FREQUENCY*Wheel_perimeter/Encoder_precision;  //ç¼–ç å™¨çš„æ•°æ®è½¬æ¢
+		MOTOR_B.Encoder= Encoder_B_pr*CONTROL_FREQUENCY*Wheel_perimeter/Encoder_precision; //ç¼–ç å™¨çš„æ•°æ®è½¬æ¢
+		MOTOR_C.Encoder= Encoder_C_pr*CONTROL_FREQUENCY*Wheel_perimeter/Encoder_precision;  //ç¼–ç å™¨çš„æ•°æ®è½¬æ¢
+		MOTOR_D.Encoder= Encoder_D_pr*CONTROL_FREQUENCY*Wheel_perimeter/Encoder_precision; //ç¼–ç å™¨çš„æ•°æ®è½¬æ¢
 }
 /**************************************************************************
-º¯Êı¹¦ÄÜ£º½«»úÆ÷ÈËµÄÄ¿±êËÙ¶È×öÆ½»¬¿ØÖÆ´¦Àí
-Èë¿Ú²ÎÊı£º»úÆ÷ÈËÈıÖáÄ¿±êËÙ¶È
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šå°†æœºå™¨äººçš„ç›®æ ‡é€Ÿåº¦åšå¹³æ»‘æ§åˆ¶å¤„ç†
+å…¥å£å‚æ•°ï¼šæœºå™¨äººä¸‰è½´ç›®æ ‡é€Ÿåº¦
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void Smooth_control(float vx,float vy,float vz)
 {
@@ -1035,9 +1035,9 @@ void Smooth_control(float vx,float vy,float vz)
 	smooth_control.VZ=target_limit_float(smooth_control.VZ,-float_abs(vz),float_abs(vz));
 }
 /**************************************************************************
-º¯Êı¹¦ÄÜ£º¸¡µãĞÍÊı¾İÈ¡¾ø¶ÔÖµ
-Èë¿Ú²ÎÊı£º¸¡µãÊı
-·µ»Ø  Öµ£ºÊäÈëÊıµÄ¾ø¶ÔÖµ
+å‡½æ•°åŠŸèƒ½ï¼šæµ®ç‚¹å‹æ•°æ®å–ç»å¯¹å€¼
+å…¥å£å‚æ•°ï¼šæµ®ç‚¹æ•°
+è¿”å›  å€¼ï¼šè¾“å…¥æ•°çš„ç»å¯¹å€¼
 **************************************************************************/
 float float_abs(float insert)
 {
@@ -1046,14 +1046,14 @@ float float_abs(float insert)
 }
 
 /**************************************************************************
-º¯Êı¹¦ÄÜ£º·ÀÖ¹µçÎ»Æ÷Ñ¡´íÄ£Ê½£¬µ¼ÖÂ³õÊ¼»¯³ö´íÒı·¢µç»úÂÒ×ª
-Èë¿Ú²ÎÊı£ºÎŞ
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šé˜²æ­¢ç”µä½å™¨é€‰é”™æ¨¡å¼ï¼Œå¯¼è‡´åˆå§‹åŒ–å‡ºé”™å¼•å‘ç”µæœºä¹±è½¬
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void robot_mode_check(void)
 {
 	static u8 error=0;
 
 	if(abs(MOTOR_A.Motor_Pwm)>2500||abs(MOTOR_B.Motor_Pwm)>2500||abs(MOTOR_C.Motor_Pwm)>2500||abs(MOTOR_D.Motor_Pwm)>2500)   error++;
-	if(error>6) EN=0,Flag_Stop=1,robot_mode_check_flag=1;  //Èç¹ûÁ¬ĞøÊ®´Î½Ó½üÂú·ùÊä³ö£¬ÅĞ¶ÏÎªµç»úÂÒ×ª£¬ÈÃµç»úÊ§ÄÜ	
+	if(error>6) EN=0,Flag_Stop=1,robot_mode_check_flag=1;  //å¦‚æœè¿ç»­åæ¬¡æ¥è¿‘æ»¡å¹…è¾“å‡ºï¼Œåˆ¤æ–­ä¸ºç”µæœºä¹±è½¬ï¼Œè®©ç”µæœºå¤±èƒ½	
 }

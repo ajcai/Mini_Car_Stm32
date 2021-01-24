@@ -1,18 +1,18 @@
   /**************************************************************************
-×÷Õß£ºÆ½ºâĞ¡³µÖ®¼Ò
-ÎÒµÄÌÔ±¦Ğ¡µê£ºhttp://shop114407458.taobao.com/
+ä½œè€…ï¼šå¹³è¡¡å°è½¦ä¹‹å®¶
+æˆ‘çš„æ·˜å®å°åº—ï¼šhttp://shop114407458.taobao.com/
 **************************************************************************/
 
 #ifndef __DATA_PRTOCOL_H
 #define __DATA_PRTOCOL_H
  
  
-extern unsigned char DataScope_OutPut_Buffer[42];	   //´ı·¢ËÍÖ¡Êı¾İ»º´æÇø
+extern unsigned char DataScope_OutPut_Buffer[42];	   //å¾…å‘é€å¸§æ•°æ®ç¼“å­˜åŒº
 
 
-void DataScope_Get_Channel_Data(float Data,unsigned char Channel);    // Ğ´Í¨µÀÊı¾İÖÁ ´ı·¢ËÍÖ¡Êı¾İ»º´æÇø
+void DataScope_Get_Channel_Data(float Data,unsigned char Channel);    // å†™é€šé“æ•°æ®è‡³ å¾…å‘é€å¸§æ•°æ®ç¼“å­˜åŒº
 
-unsigned char DataScope_Data_Generate(unsigned char Channel_Number);  // ·¢ËÍÖ¡Êı¾İÉú³Éº¯Êı 
+unsigned char DataScope_Data_Generate(unsigned char Channel_Number);  // å‘é€å¸§æ•°æ®ç”Ÿæˆå‡½æ•° 
  
  
 #endif 

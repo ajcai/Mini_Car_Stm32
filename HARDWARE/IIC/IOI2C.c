@@ -2,31 +2,31 @@
 #include "sys.h"
 #include "delay.h"
 /**************************************************************************
-º¯Êý¹¦ÄÜ£ºIICÒý½Å³õÊ¼»¯
-Èë¿Ú²ÎÊý£ºÎÞ
-·µ»Ø  Öµ£ºÎÞ
+å‡½æ•°åŠŸèƒ½ï¼šIICå¼•è„šåˆå§‹åŒ–
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›ž  å€¼ï¼šæ— 
 **************************************************************************/
 void IIC_Init(void)
 {			
 	GPIO_InitTypeDef  GPIO_InitStructure;
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);//ÏÈÊ¹ÄÜÍâÉèIO PORTCÊ±ÖÓ 
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);//å…ˆä½¿èƒ½å¤–è®¾IO PORTCæ—¶é’Ÿ 
 		
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;	 // ¶Ë¿ÚÅäÖÃ
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //ÍÆÍìÊä³ö
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;		 //IO¿ÚËÙ¶ÈÎª50MHz
-	GPIO_Init(GPIOB, &GPIO_InitStructure);					 //¸ù¾ÝÉè¶¨²ÎÊý³õÊ¼»¯GPIO 
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;	 // ç«¯å£é…ç½®
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //æŽ¨æŒ½è¾“å‡º
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;		 //IOå£é€Ÿåº¦ä¸º50MHz
+	GPIO_Init(GPIOB, &GPIO_InitStructure);					 //æ ¹æ®è®¾å®šå‚æ•°åˆå§‹åŒ–GPIO 
 	
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;	 // ¶Ë¿ÚÅäÖÃ
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //ÍÆÍìÊä³ö
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;		 //IO¿ÚËÙ¶ÈÎª50MHz
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;	 // ç«¯å£é…ç½®
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; 		 //æŽ¨æŒ½è¾“å‡º
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;		 //IOå£é€Ÿåº¦ä¸º50MHz
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 	
-	GPIO_SetBits(GPIOB,GPIO_Pin_8|GPIO_Pin_9);						 //PB8,PB9 Êä³ö¸ß	
+	GPIO_SetBits(GPIOB,GPIO_Pin_8|GPIO_Pin_9);						 //PB8,PB9 è¾“å‡ºé«˜	
 }
 /**************************************************************************
-º¯Êý¹¦ÄÜ£ºÄ£ÄâIICÆðÊ¼ÐÅºÅ
-Èë¿Ú²ÎÊý£ºÎÞ
-·µ»Ø  Öµ£ºÎÞ
+å‡½æ•°åŠŸèƒ½ï¼šæ¨¡æ‹ŸIICèµ·å§‹ä¿¡å·
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›ž  å€¼ï¼šæ— 
 **************************************************************************/
 void IIC_Start(void)
 {
@@ -40,9 +40,9 @@ void IIC_Start(void)
 	IIC_SCL=0;
 }	  
 /**************************************************************************
-º¯Êý¹¦ÄÜ£ºÄ£ÄâIIC½áÊøÐÅºÅ
-Èë¿Ú²ÎÊý£ºÎÞ
-·µ»Ø  Öµ£ºÎÞ
+å‡½æ•°åŠŸèƒ½ï¼šæ¨¡æ‹ŸIICç»“æŸä¿¡å·
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›ž  å€¼ï¼šæ— 
 **************************************************************************/
 void IIC_Stop(void)
 {
@@ -55,9 +55,9 @@ void IIC_Stop(void)
 	delay_us(4);							   	
 }
 /**************************************************************************
-º¯Êý¹¦ÄÜ£ºIIC²úÉúÓ¦´ðÐÅºÅ
-Èë¿Ú²ÎÊý£ºÎÞ
-·µ»Ø  Öµ£ºÎÞ
+å‡½æ•°åŠŸèƒ½ï¼šIICäº§ç”Ÿåº”ç­”ä¿¡å·
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›ž  å€¼ï¼šæ— 
 **************************************************************************/
 unsigned char IIC_Wait_Ack(void)
 {
@@ -78,9 +78,9 @@ unsigned char IIC_Wait_Ack(void)
 	return 0;  
 } 
 /**************************************************************************
-º¯Êý¹¦ÄÜ£ºIICÓ¦´ð
-Èë¿Ú²ÎÊý£ºÎÞ
-·µ»Ø  Öµ£ºÎÞ
+å‡½æ•°åŠŸèƒ½ï¼šIICåº”ç­”
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›ž  å€¼ï¼šæ— 
 **************************************************************************/
 void IIC_Ack(void)
 {
@@ -93,9 +93,9 @@ void IIC_Ack(void)
 	IIC_SCL=0;
 }
 /**************************************************************************
-º¯Êý¹¦ÄÜ£ºIIC²»Ó¦´ð
-Èë¿Ú²ÎÊý£ºÎÞ
-·µ»Ø  Öµ£ºÎÞ
+å‡½æ•°åŠŸèƒ½ï¼šIICä¸åº”ç­”
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›ž  å€¼ï¼šæ— 
 **************************************************************************/ 
 void IIC_NAck(void)
 {
@@ -108,9 +108,9 @@ void IIC_NAck(void)
 	IIC_SCL=0;
 }					 				     
 /**************************************************************************
-º¯Êý¹¦ÄÜ£ºIIC·¢ËÍÒ»¸öÎ»
-Èë¿Ú²ÎÊý£ºÎÞ
-·µ»Ø  Öµ£ºÎÞ
+å‡½æ•°åŠŸèƒ½ï¼šIICå‘é€ä¸€ä¸ªä½
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›ž  å€¼ï¼šæ— 
 **************************************************************************/
 void IIC_Send_Byte(u8 txd)
 {                        
@@ -129,9 +129,9 @@ void IIC_Send_Byte(u8 txd)
     }	 
 } 	    
 /**************************************************************************
-º¯Êý¹¦ÄÜ£ºII¶ÁÈ¡Ò»¸öÎ»
-Èë¿Ú²ÎÊý£ºÎÞ
-·µ»Ø  Öµ£ºÎÞ
+å‡½æ•°åŠŸèƒ½ï¼šIIè¯»å–ä¸€ä¸ªä½
+å…¥å£å‚æ•°ï¼šæ— 
+è¿”å›ž  å€¼ï¼šæ— 
 **************************************************************************/
 unsigned char IIC_Read_Byte(unsigned char ack)
 {

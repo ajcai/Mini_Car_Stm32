@@ -2,10 +2,10 @@
 #define __LED_H
 #include "sys.h"
 #include "system.h"
-//LED ¶Ë¿Ú¶¨Òå
+//LED ç«¯å£å®šä¹‰
 
-#define LED_TASK_PRIO		3     //ÈÎÎñÓÅÏÈ¼¶
-#define LED_STK_SIZE 		128   //ÈÎÎñ¶ÑÕ»´óĞ¡
+#define LED_TASK_PRIO		3     //ä»»åŠ¡ä¼˜å…ˆçº§
+#define LED_STK_SIZE 		128   //ä»»åŠ¡å †æ ˆå¤§å°
 
 
 /*--------Buzzer control pin--------*/

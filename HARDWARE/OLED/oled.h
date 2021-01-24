@@ -3,7 +3,7 @@
 #include "sys.h"
 #include "system.h"
 
-//-----------------OLED¶Ë¿Ú¶¨Òå---------------- 
+//-----------------OLEDç«¯å£å®šä¹‰---------------- 
 #define OLED_RST_Clr() PEout(7)=0   //RST
 #define OLED_RST_Set() PEout(7)=1   //RST
 
@@ -15,9 +15,9 @@
 
 #define OLED_SDIN_Clr()  PEout(6)=0   //SDA
 #define OLED_SDIN_Set()  PEout(6)=1   //SDA
-#define OLED_CMD  0	//Ğ´ÃüÁî
-#define OLED_DATA 1	//Ğ´Êı¾İ
-//OLED¿ØÖÆÓÃº¯Êı
+#define OLED_CMD  0	//å†™å‘½ä»¤
+#define OLED_DATA 1	//å†™æ•°æ®
+//OLEDæ§åˆ¶ç”¨å‡½æ•°
 void OLED_WR_Byte(u8 dat,u8 cmd);	    
 void OLED_Display_On(void);
 void OLED_Display_Off(void);
@@ -30,7 +30,7 @@ void OLED_ShowNumber(u8 x,u8 y,u32 num,u8 len,u8 size);
 void OLED_ShowString(u8 x,u8 y,const u8 *p);
 
 
-/*ÓÃ×ÖÄ£Éú³ÉÈí¼şÉú³ÉµÄºº×ÖÊı×éÕâÀï ¿í*¸ß=16*16 */
+/*ç”¨å­—æ¨¡ç”Ÿæˆè½¯ä»¶ç”Ÿæˆçš„æ±‰å­—æ•°ç»„è¿™é‡Œ å®½*é«˜=16*16 */
 #define CNSizeWidth  16
 #define CNSizeHeight 16
 //extern char Hzk16[][16];

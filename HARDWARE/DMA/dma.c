@@ -2,48 +2,48 @@
 #include "sys.h"
 
 DMA_InitTypeDef DMA_InitStructure;
-u16 DMA1_MEM_LEN2;//±£´æDMAÃ¿´ÎÊı¾İ´«ËÍµÄ³¤¶È
+u16 DMA1_MEM_LEN2;//ä¿å­˜DMAæ¯æ¬¡æ•°æ®ä¼ é€çš„é•¿åº¦
 
 /**************************************************************************
-º¯Êı¹¦ÄÜ£º´®¿Ú2DMA³õÊ¼»¯
-Èë¿Ú²ÎÊı£ºDMAÍ¨µÀ£¬Êı¾İµÄÄ¿±êµØÖ·£¬Êı¾İµÄÆğÊ¼µØÖ·£¬·¢ËÍµÄÊı¾İÊıÁ¿
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šä¸²å£2DMAåˆå§‹åŒ–
+å…¥å£å‚æ•°ï¼šDMAé€šé“ï¼Œæ•°æ®çš„ç›®æ ‡åœ°å€ï¼Œæ•°æ®çš„èµ·å§‹åœ°å€ï¼Œå‘é€çš„æ•°æ®æ•°é‡
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void MYDMA_Init2(DMA_Channel_TypeDef* DMA_CHx,u32 cpar,u32 cmar,u16 cndtr)
 {
- 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);	//Ê¹ÄÜDMA´«Êä
+ 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);	//ä½¿èƒ½DMAä¼ è¾“
 	
-  DMA_DeInit(DMA_CHx);	//½«DMAµÄÍ¨µÀ1¼Ä´æÆ÷ÖØÉèÎªÈ±Ê¡Öµ
-	DMA1_MEM_LEN2=cndtr;		//Êı¾İ´«ÊäÁ¿ 
-	DMA_InitStructure.DMA_PeripheralBaseAddr = cpar;  //DMAÍâÉèADC»ùµØÖ·
-	DMA_InitStructure.DMA_MemoryBaseAddr = cmar;  //DMAÄÚ´æ»ùµØÖ·
-	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;  //Êı¾İ´«Êä·½Ïò£¬´ÓÄÚ´æ¶ÁÈ¡·¢ËÍµ½ÍâÉè
-	DMA_InitStructure.DMA_BufferSize = cndtr;  //DMAÍ¨µÀµÄDMA»º´æµÄ´óĞ¡
-	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;  //ÍâÉèµØÖ·¼Ä´æÆ÷²»±ä
-	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;  //ÄÚ´æµØÖ·¼Ä´æÆ÷µİÔö
-	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;  //Êı¾İ¿í¶ÈÎª8Î»
-	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte; //Êı¾İ¿í¶ÈÎª8Î»
-	DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;  //¹¤×÷ÔÚÕı³£»º´æÄ£Ê½
-	DMA_InitStructure.DMA_Priority = DMA_Priority_High; //DMAÍ¨µÀ xÓµÓĞ¸ßÓÅÏÈ¼¶ 
-	DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;  //DMAÍ¨µÀxÃ»ÓĞÉèÖÃÎªÄÚ´æµ½ÄÚ´æ´«Êä
-	DMA_Init(DMA_CHx, &DMA_InitStructure);  //¸ù¾İDMA_InitStructÖĞÖ¸¶¨µÄ²ÎÊı³õÊ¼»¯DMAµÄÍ¨µÀUSART1_Tx_DMA_ChannelËù±êÊ¶µÄ¼Ä´æÆ÷ 	
+  DMA_DeInit(DMA_CHx);	//å°†DMAçš„é€šé“1å¯„å­˜å™¨é‡è®¾ä¸ºç¼ºçœå€¼
+	DMA1_MEM_LEN2=cndtr;		//æ•°æ®ä¼ è¾“é‡ 
+	DMA_InitStructure.DMA_PeripheralBaseAddr = cpar;  //DMAå¤–è®¾ADCåŸºåœ°å€
+	DMA_InitStructure.DMA_MemoryBaseAddr = cmar;  //DMAå†…å­˜åŸºåœ°å€
+	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;  //æ•°æ®ä¼ è¾“æ–¹å‘ï¼Œä»å†…å­˜è¯»å–å‘é€åˆ°å¤–è®¾
+	DMA_InitStructure.DMA_BufferSize = cndtr;  //DMAé€šé“çš„DMAç¼“å­˜çš„å¤§å°
+	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;  //å¤–è®¾åœ°å€å¯„å­˜å™¨ä¸å˜
+	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;  //å†…å­˜åœ°å€å¯„å­˜å™¨é€’å¢
+	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;  //æ•°æ®å®½åº¦ä¸º8ä½
+	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte; //æ•°æ®å®½åº¦ä¸º8ä½
+	DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;  //å·¥ä½œåœ¨æ­£å¸¸ç¼“å­˜æ¨¡å¼
+	DMA_InitStructure.DMA_Priority = DMA_Priority_High; //DMAé€šé“ xæ‹¥æœ‰é«˜ä¼˜å…ˆçº§ 
+	DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;  //DMAé€šé“xæ²¡æœ‰è®¾ç½®ä¸ºå†…å­˜åˆ°å†…å­˜ä¼ è¾“
+	DMA_Init(DMA_CHx, &DMA_InitStructure);  //æ ¹æ®DMA_InitStructä¸­æŒ‡å®šçš„å‚æ•°åˆå§‹åŒ–DMAçš„é€šé“USART1_Tx_DMA_Channelæ‰€æ ‡è¯†çš„å¯„å­˜å™¨ 	
 } 
 /**************************************************************************
-º¯Êı¹¦ÄÜ£º¿ªÆôÒ»´ÎDMA´«Êä
-Èë¿Ú²ÎÊı£ºDMAÍ¨µÀ£¬Êı¾İµÄÄ¿±êµØÖ·£¬Êı¾İµÄÆğÊ¼µØÖ·£¬·¢ËÍµÄÊı¾İÊıÁ¿
-·µ»Ø  Öµ£ºÎŞ
+å‡½æ•°åŠŸèƒ½ï¼šå¼€å¯ä¸€æ¬¡DMAä¼ è¾“
+å…¥å£å‚æ•°ï¼šDMAé€šé“ï¼Œæ•°æ®çš„ç›®æ ‡åœ°å€ï¼Œæ•°æ®çš„èµ·å§‹åœ°å€ï¼Œå‘é€çš„æ•°æ®æ•°é‡
+è¿”å›  å€¼ï¼šæ— 
 **************************************************************************/
 void MYDMA_Enable2(DMA_Channel_TypeDef*DMA_CHx)
 { 
-	DMA_Cmd(DMA_CHx, DISABLE );  //¹Ø±ÕUSART1 TX DMA1 ËùÖ¸Ê¾µÄÍ¨µÀ      
- 	DMA_SetCurrDataCounter(DMA1_Channel7,DMA1_MEM_LEN2);//DMAÍ¨µÀµÄDMA»º´æµÄ´óĞ¡
- 	DMA_Cmd(DMA_CHx, ENABLE);  //Ê¹ÄÜUSART1 TX DMA1 ËùÖ¸Ê¾µÄÍ¨µÀ 
+	DMA_Cmd(DMA_CHx, DISABLE );  //å…³é—­USART1 TX DMA1 æ‰€æŒ‡ç¤ºçš„é€šé“      
+ 	DMA_SetCurrDataCounter(DMA1_Channel7,DMA1_MEM_LEN2);//DMAé€šé“çš„DMAç¼“å­˜çš„å¤§å°
+ 	DMA_Cmd(DMA_CHx, ENABLE);  //ä½¿èƒ½USART1 TX DMA1 æ‰€æŒ‡ç¤ºçš„é€šé“ 
 }	  
 
 ///**************************************************************************
-//º¯Êı¹¦ÄÜ£ºDMA·½Ê½µÄprintf
-//Èë¿Ú²ÎÊı£ºÒª´òÓ¡µÄÄÚÈİ
-//·µ»Ø  Öµ£ºÎŞ
+//å‡½æ•°åŠŸèƒ½ï¼šDMAæ–¹å¼çš„printf
+//å…¥å£å‚æ•°ï¼šè¦æ‰“å°çš„å†…å®¹
+//è¿”å›  å€¼ï¼šæ— 
 //**************************************************************************/
 void DMA_printf(const char *format,...)
 {
@@ -63,14 +63,14 @@ u32 USART_SendBuffer(const char* buffer, u32 length)
 		return 0;
 	}
  
-	DMA_Cmd(DMA1_Channel7, DISABLE); //Ê§ÄÜDMAÍ¨µÀ
+	DMA_Cmd(DMA1_Channel7, DISABLE); //å¤±èƒ½DMAé€šé“
 	DMA_SetCurrDataCounter(DMA1_Channel7, length);
-	DMA_Cmd(DMA1_Channel7, ENABLE); //Ê¹ÄÜDMAÍ¨µÀ
+	DMA_Cmd(DMA1_Channel7, ENABLE); //ä½¿èƒ½DMAé€šé“
 	while(1)
 	{
-		if(DMA_GetITStatus(DMA1_IT_TC7)!=RESET)	//ÅĞ¶ÏÍ¨µÀ7£¨uart2_tx£©´«ÊäÍê³É
+		if(DMA_GetITStatus(DMA1_IT_TC7)!=RESET)	//åˆ¤æ–­é€šé“7ï¼ˆuart2_txï¼‰ä¼ è¾“å®Œæˆ
 		{
-			DMA_ClearFlag(DMA1_IT_TC7);//Çå³ıÍ¨µÀ7´«ÊäÍê³É±êÖ¾
+			DMA_ClearFlag(DMA1_IT_TC7);//æ¸…é™¤é€šé“7ä¼ è¾“å®Œæˆæ ‡å¿—
 			break;
 		}
 	}

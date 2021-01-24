@@ -1,61 +1,61 @@
 /***********************************************
-¹«Ë¾£º¶«İ¸ÊĞÎ¢ºêÖÇÄÜ¿Æ¼¼ÓĞÏŞ¹«Ë¾
-Æ·ÅÆ£ºWHEELTEC
-¹ÙÍø£ºwheeltec.net
-ÌÔ±¦µêÆÌ£ºshop114407458.taobao.com 
-°æ±¾V1.0
-ĞŞ¸ÄÊ±¼ä£º2020-07-04
+å…¬å¸ï¼šä¸œèå¸‚å¾®å®æ™ºèƒ½ç§‘æŠ€æœ‰é™å…¬å¸
+å“ç‰Œï¼šWHEELTEC
+å®˜ç½‘ï¼šwheeltec.net
+æ·˜å®åº—é“ºï¼šshop114407458.taobao.com 
+ç‰ˆæœ¬V1.0
+ä¿®æ”¹æ—¶é—´ï¼š2020-07-04
 All rights reserved
 ***********************************************/
 #include "system.h"
 
-//ÈÎÎñÓÅÏÈ¼¶
+//ä»»åŠ¡ä¼˜å…ˆçº§
 #define START_TASK_PRIO			4
-//ÈÎÎñ¶ÑÕ»´óĞ¡	
+//ä»»åŠ¡å †æ ˆå¤§å°	
 #define START_STK_SIZE 			256  
-//ÈÎÎñ¾ä±ú
+//ä»»åŠ¡å¥æŸ„
 TaskHandle_t StartTask_Handler;
-//ÈÎÎñº¯Êı
+//ä»»åŠ¡å‡½æ•°
 void start_task(void *pvParameters);
 
 int main(void)
 { 
    systemInit();
 	
-	//´´½¨¿ªÊ¼ÈÎÎñ
+	//åˆ›å»ºå¼€å§‹ä»»åŠ¡
 	
-    xTaskCreate((TaskFunction_t )start_task,            //ÈÎÎñº¯Êı
-                (const char*    )"start_task",          //ÈÎÎñÃû³Æ
-                (uint16_t       )START_STK_SIZE,        //ÈÎÎñ¶ÑÕ»´óĞ¡
-                (void*          )NULL,                  //´«µİ¸øÈÎÎñº¯ÊıµÄ²ÎÊı
-                (UBaseType_t    )START_TASK_PRIO,       //ÈÎÎñÓÅÏÈ¼¶
-                (TaskHandle_t*  )&StartTask_Handler);   //ÈÎÎñ¾ä±ú    
+    xTaskCreate((TaskFunction_t )start_task,            //ä»»åŠ¡å‡½æ•°
+                (const char*    )"start_task",          //ä»»åŠ¡åç§°
+                (uint16_t       )START_STK_SIZE,        //ä»»åŠ¡å †æ ˆå¤§å°
+                (void*          )NULL,                  //ä¼ é€’ç»™ä»»åŠ¡å‡½æ•°çš„å‚æ•°
+                (UBaseType_t    )START_TASK_PRIO,       //ä»»åŠ¡ä¼˜å…ˆçº§
+                (TaskHandle_t*  )&StartTask_Handler);   //ä»»åŠ¡å¥æŸ„    
   						
-    vTaskStartScheduler();          //¿ªÆôÈÎÎñµ÷¶È
+    vTaskStartScheduler();          //å¼€å¯ä»»åŠ¡è°ƒåº¦
 							
 }
 
-//¿ªÊ¼ÈÎÎñÈÎÎñº¯Êı
+//å¼€å§‹ä»»åŠ¡ä»»åŠ¡å‡½æ•°
 void start_task(void *pvParameters)
 {
 
-    taskENTER_CRITICAL();           //½øÈëÁÙ½çÇø
-    //´´½¨ÈÎÎñ
-	  xTaskCreate(Balance_task, "Balance_task", BALANCE_STK_SIZE, NULL, BALANCE_TASK_PRIO, NULL);	//Ğ¡³µ¿ØÖÆÈÎÎñ
+    taskENTER_CRITICAL();           //è¿›å…¥ä¸´ç•ŒåŒº
+    //åˆ›å»ºä»»åŠ¡
+	  xTaskCreate(Balance_task, "Balance_task", BALANCE_STK_SIZE, NULL, BALANCE_TASK_PRIO, NULL);	//å°è½¦æ§åˆ¶ä»»åŠ¡
 	
-	  xTaskCreate(MPU9250_task, "MPU9250_task", MPU9250_STK_SIZE, NULL, MPU9250_TASK_PRIO, NULL);	//ÍÓÂİÒÇÊı¾İ¶ÁÈ¡ÈÎÎñ
+	  xTaskCreate(MPU9250_task, "MPU9250_task", MPU9250_STK_SIZE, NULL, MPU9250_TASK_PRIO, NULL);	//é™€èºä»ªæ•°æ®è¯»å–ä»»åŠ¡
 	
-    xTaskCreate(show_task, "show_task", SHOW_STK_SIZE, NULL, SHOW_TASK_PRIO, NULL);  //ÏÔÊ¾ÆÁÏÔÊ¾ÈÎÎñ
+    xTaskCreate(show_task, "show_task", SHOW_STK_SIZE, NULL, SHOW_TASK_PRIO, NULL);  //æ˜¾ç¤ºå±æ˜¾ç¤ºä»»åŠ¡
 	
-    xTaskCreate(led_task, "led_task", LED_STK_SIZE, NULL, LED_TASK_PRIO, NULL);	     //ledµÆÈÎÎñ
+    xTaskCreate(led_task, "led_task", LED_STK_SIZE, NULL, LED_TASK_PRIO, NULL);	     //ledç¯ä»»åŠ¡
 
-    xTaskCreate(pstwo_task, "PSTWO_task", PS2_STK_SIZE, NULL, PS2_TASK_PRIO, NULL);	 //ÊÖ±ú¿ØÖÆÈÎÎñ
+    xTaskCreate(pstwo_task, "PSTWO_task", PS2_STK_SIZE, NULL, PS2_TASK_PRIO, NULL);	 //æ‰‹æŸ„æ§åˆ¶ä»»åŠ¡
 
-    xTaskCreate(data_task, "DATA_task", DATA_STK_SIZE, NULL, DATA_TASK_PRIO, NULL);	 //´®¿Ú3 ·¢ËÍ/½ÓÊÕ Êı¾İÈÎÎñ
+    xTaskCreate(data_task, "DATA_task", DATA_STK_SIZE, NULL, DATA_TASK_PRIO, NULL);	 //ä¸²å£3 å‘é€/æ¥æ”¶ æ•°æ®ä»»åŠ¡
 	
-    vTaskDelete(StartTask_Handler); //É¾³ı¿ªÊ¼ÈÎÎñ
+    vTaskDelete(StartTask_Handler); //åˆ é™¤å¼€å§‹ä»»åŠ¡
 
-    taskEXIT_CRITICAL();            //ÍË³öÁÙ½çÇø
+    taskEXIT_CRITICAL();            //é€€å‡ºä¸´ç•ŒåŒº
 	  
 }
 

@@ -11,7 +11,7 @@
 
 #define IIC_SCL    	PBout(8) 		//SCL
 #define IIC_SDA    	PBout(9) //SDA
-#define READ_SDA   PBin(9)  //ÊäÈëSDA 
+#define READ_SDA   PBin(9)  //è¾“å…¥SDA 
 
 void IIC_Init(void);                			 
 void IIC_Start(void);				
