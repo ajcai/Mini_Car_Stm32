@@ -1,2 +1,5 @@
+OBJ/*
+USER/DebugConfig/*
+USER/*.uvguix.*
 *.hex
 *.pdf
