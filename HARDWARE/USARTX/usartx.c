@@ -406,7 +406,7 @@ void data_task(void *pvParameters)
 **************************************************************************/
 void data_transition(void)
 {
-	unsigned char i = 0;
+  unsigned char i = 0;
   Send_Data.Sensor_Str.Frame_Header = FRAME_HEADER; //帧头
   Send_Data.Sensor_Str.Frame_Tail = FRAME_TAIL;     //帧尾
 
@@ -463,13 +463,16 @@ void data_transition(void)
     Send_Data.Sensor_Str.Gyroscope.Z_data = 0; //如果机器人是静止的（电机控制位失能），那么发送的Z轴角速度为0
 
   Send_Data.Sensor_Str.Power_Voltage = Voltage * 1000; //电池电压(这里将浮点数放大一千倍传输，相应的在接收端在接收到数据后也会缩小一千倍)
-	for (i = 0; i < 8; ++i)
+  for (i = 0; i < 8; ++i)
   {
     if (i == 0)
     {
       Send_Data.Sensor_Str.control_data.Data[i] = (unsigned char)PS2_KEY; //PS2手柄按键
     }
-    Send_Data.Sensor_Str.control_data.Data[i] = 0x00; //保留字段
+    else
+    {
+      Send_Data.Sensor_Str.control_data.Data[i] = 0x00; //保留字段
+    }
   }
 
   Send_Data.buffer[0] = Send_Data.Sensor_Str.Frame_Header; //帧头(固定值)
